@@ -140,7 +140,6 @@ AutoPartyListWindow < MainWindow
     anchors.left: prev.right
     anchors.top: prev.top
     anchors.bottom: prev.bottom
-    color: green
     margin-left: 3
 
   HorizontalSeparator
@@ -282,9 +281,9 @@ if rootWidget then
 
   autoPartyListWindow.playerName.onTextChange = function(widget, text)
     if table.contains(config.autoPartyList, text, true) then
-      autoPartyListWindow.addPlayer:setColor("#FF0000")
+      autoPartyListWindow.addPlayer:setColor("red")
     else
-      autoPartyListWindow.addPlayer:setColor("#FFFFFF")
+      autoPartyListWindow.addPlayer:setColor("green")
     end
   end
 
