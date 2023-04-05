@@ -15,8 +15,6 @@
 
 UI.Separator()
 
-local panelName = "autoParty"
-local config = storage[panelName]
 local autopartyui = setupUI([[
 Panel
   height: 38
@@ -195,22 +193,20 @@ AutoPartyListWindow < MainWindow
     !tooltip: tr('Original made by Lee#7225\nModified by F.Almeida#8019')
 ]])
 
-if not config then
-  config = {
+local panelName = "autoParty"
+
+if not storage[panelName] then
+  storage[panelName] = {
     leaderName = 'Leader',
     autoPartyList = {},
     enabled = false,
-    inviteTxt = 'party me'
+    inviteTxt = 'party me',
+    autoShare = false,
+    onMsg = false,
   }
 end
 
-if not config.autoShare then
-  config.autoShare = false
-end
-
-if not config.onMsg then
-  config.onMsg = false
-end
+local config = storage[panelName]
 
 rootWidget = g_ui.getRootWidget()
 if rootWidget then
