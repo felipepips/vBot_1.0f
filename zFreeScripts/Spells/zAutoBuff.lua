@@ -262,8 +262,8 @@ local panelName = "autoBuff"
 if not storage[panelName] then
   storage[panelName] = {
     iconPosX = 200,
-    iconPosY = 250,
-    exhausted = 1000,
+    iconPosY = 70,
+    exhausted = 1001,
     spellList = {"set some spell first, 3000"},
     enabled = false,
     atk = false,

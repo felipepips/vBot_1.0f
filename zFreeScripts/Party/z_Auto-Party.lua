@@ -1,10 +1,16 @@
--- Original made by Lee#7225
--- Edited by F.Almeida#8019
--- https://trainorcreations.com/coding/otclient/27
+--[[
+vBot Scripting Services / Serviços de script / Servicios de scripting:
+Discord: F.Almeida#8019
 
--- vBot scripting services: F.Almeida#8019
--- if you like it, consider making a donation:
--- https://www.paypal.com/donate/?business=8XSU4KTS2V9PN&no_recurring=0&item_name=OTC+AND+OTS+SCRIPTS&currency_code=USD
+(ENG) If you like it, consider making a donation:
+(PT) Se você gostou, considere fazer uma doação:
+(ESP) Si le gusta, considere hacer una donación:
+https://www.paypal.com/donate/?business=8XSU4KTS2V9PN&no_recurring=0&item_name=OTC+AND+OTS+SCRIPTS&currency_code=USD
+
+
+Original made by Lee#7225
+https://trainorcreations.com/coding/otclient/27
+--]]
 
 -- ATTENTION:
 -- Don't edit below this line unless you know what you're doing.
@@ -12,8 +18,8 @@
 -- Não mexa em nada daqui para baixo, a não ser que saiba o que está fazendo.
 -- ATENCIÓN:
 -- No cambies nada desde aquí, solamente si sabes lo que estás haciendo.
-
-UI.Separator()
+-- setDefaultTab("Tools")
+-- UI.Separator()
 
 local autopartyui = setupUI([[
 Panel
@@ -190,6 +196,7 @@ AutoPartyListWindow < MainWindow
     size: 45 21
     color: yellow
     !tooltip: tr('Original made by Lee#7225\nModified by F.Almeida#8019')
+    @onClick: g_platform.openUrl("https://www.paypal.com/donate/?business=8XSU4KTS2V9PN&no_recurring=0&item_name=OTC+AND+OTS+SCRIPTS&currency_code=USD")
 ]])
 
 local panelName = "autoParty"

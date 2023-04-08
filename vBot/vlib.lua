@@ -700,6 +700,7 @@ end
 -- padding is only for multifloor
 -- returns boolean
 function isSafe(range, multifloor, padding)
+  if not range then range = 6 end
     local onSame = 0
     local onAnother = 0
     if not multifloor and padding then
