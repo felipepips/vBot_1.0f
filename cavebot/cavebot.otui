@@ -18,7 +18,7 @@ CaveBotPanel < Panel
     
   Panel
     id: listPanel
-    height: 100
+    height: 130
     margin-top: 2
 
     TextList
@@ -28,6 +28,7 @@ CaveBotPanel < Panel
       margin-right: 15
       focusable: false
       auto-focus: first
+      background-color: #585860
       
     VerticalScrollBar
       id: listScrollbar
@@ -36,6 +37,11 @@ CaveBotPanel < Panel
       anchors.right: parent.right
       pixels-scroll: true
       step: 10
+
+  BotSwitch
+    id: autoRecording
+    text: Auto Recording
+    margin-top: 3      
     
   BotSwitch
     id: showEditor

@@ -18,7 +18,7 @@ https://trainorcreations.com/coding/otclient/27
 -- Não mexa em nada daqui para baixo, a não ser que saiba o que está fazendo.
 -- ATENCIÓN:
 -- No cambies nada desde aquí, solamente si sabes lo que estás haciendo.
--- setDefaultTab("Tools")
+setDefaultTab("Tools")
 -- UI.Separator()
 
 local autopartyui = setupUI([[

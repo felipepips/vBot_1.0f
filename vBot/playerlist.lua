@@ -18,7 +18,7 @@ local spacing = "_"
 
 
 -- do not edit below
-setDefaultTab("Main")
+setDefaultTab("Tools")
 local tabs = {"Friends", "Enemies", "BlackList"}
 local panelName = "playerList"
 local colors = {"#03C04A", "#fc4c4e", "orange"}
@@ -349,3 +349,4 @@ onPlayerPositionChange(function(x,y)
     end)
   end
 end)
+-- UI.Separator()

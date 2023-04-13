@@ -4,7 +4,7 @@ setDefaultTab("Tools")
 if type(storage.moneyItems) ~= "table" then
   storage.moneyItems = {3031, 3035}
 end
-macro(1000, "Exchange money", function()
+macro(1000, "Change Gold", function()
   if not storage.moneyItems[1] then return end
   local containers = g_game.getContainers()
   for index, container in pairs(containers) do

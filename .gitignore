@@ -1,4 +1,6 @@
-/vBot_configs
-/targetbot_configs
-/cavebot_configs
-/storage
+vBot_configs/
+targetbot_configs/
+cavebot_configs/
+storage/
+zTeste.lua
+z.lua

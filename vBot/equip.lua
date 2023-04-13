@@ -1,9 +1,11 @@
 -- config
 setDefaultTab("HP")
+-- UI.Separator()
 local scripts = 2 -- if you want more auto equip panels you can change 2 to higher value
 
 -- script by kondrah, don't edit below unless you know what you are doing
-UI.Label("Auto equip")
+local label = UI.Label("Simple Equipper")
+
 if type(storage.autoEquip) ~= "table" then
   storage.autoEquip = {}
 end
@@ -34,3 +36,5 @@ macro(250, function()
     end
   end
 end)
+
+UI.Separator()

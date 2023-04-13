@@ -31,14 +31,3 @@ CaveBotEditorPanel < Panel
     margin-top: 3
     margin-left: 2
     margin-right: 2
-
-  BotSwitch
-    id: autoRecording
-    text: Auto Recording
-    margin-top: 3
-
-  BotButton
-    margin-top: 3
-    margin-bottom: 3
-    text: Documentation
-    @onClick: g_platform.openUrl("http://bot.otclient.ovh/")

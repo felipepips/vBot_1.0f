@@ -14,8 +14,8 @@
     "cureBleed": false,
     "holdUtura": false,
     "paralyseSpell": "utani hur",
-    "uturaType": "",
     "utanaCost": 440,
+    "uturaType": "",
     "poisonCost": 20,
     "utamoCost": 40,
     "enabled": false,
@@ -32,10 +32,10 @@
     {
       "MessageDelay": false,
       "Conditions": true,
-      "Delay": true,
       "itemTable": [
 
       ],
+      "Delay": true,
       "Visible": true,
       "Cooldown": true,
       "spellTable": [
@@ -48,10 +48,10 @@
     {
       "MessageDelay": false,
       "Conditions": true,
-      "Delay": true,
       "itemTable": [
 
       ],
+      "Delay": true,
       "Visible": true,
       "Cooldown": true,
       "spellTable": [
@@ -64,10 +64,10 @@
     {
       "MessageDelay": false,
       "Conditions": true,
-      "Delay": true,
       "itemTable": [
 
       ],
+      "Delay": true,
       "Visible": true,
       "Cooldown": true,
       "spellTable": [
@@ -80,10 +80,10 @@
     {
       "MessageDelay": false,
       "Conditions": true,
-      "Delay": true,
       "itemTable": [
 
       ],
+      "Delay": true,
       "Visible": true,
       "Cooldown": true,
       "spellTable": [
@@ -96,10 +96,10 @@
     {
       "MessageDelay": false,
       "Conditions": true,
-      "Delay": true,
       "itemTable": [
 
       ],
+      "Delay": true,
       "Visible": true,
       "Cooldown": true,
       "spellTable": [

@@ -25,6 +25,7 @@ CaveBot.Editor.registerAction = function(action, text, params)
   if color then
     button:setColor(color)
   end
+  button:setFont('verdana-11px-rounded')
   button.onClick = function()    
     if type(params) == 'function' then
       params()
@@ -145,13 +146,13 @@ CaveBot.Editor.setup = function()
     width=650
   })
   
-  ui.autoRecording.onClick = function()
-    if ui.autoRecording:isOn() then
-      CaveBot.Recorder.disable()
-    else
-      CaveBot.Recorder.enable()
-    end
-  end
+  -- ui.autoRecording.onClick = function()
+  --   if ui.autoRecording:isOn() then
+  --     CaveBot.Recorder.disable()
+  --   else
+  --     CaveBot.Recorder.enable()
+  --   end
+  -- end
   
   -- callbacks
   onPlayerPositionChange(function(pos)

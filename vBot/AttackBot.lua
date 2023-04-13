@@ -1,4 +1,6 @@
-setDefaultTab('main')
+-- setDefaultTab(storage.extras.joinBot and "Cave" or "Target")
+setDefaultTab("Main")
+-- UI.Separator()
 -- locales
 local panelName = "AttackBot"
 local currentSettings
@@ -1252,3 +1254,4 @@ macro(100, function()
     end
   end
 end)
+UI.Separator()

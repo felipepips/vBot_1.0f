@@ -285,6 +285,7 @@ if rootWidget then
           label:destroy()
         end
         label.id:setItemId(entry.item)
+        label.subType:setItemSubType(entry.subType)
         label:setText(entry.origin .. entry.sign .. entry.value .. ": " .. entry.item)
       end
     end
@@ -402,6 +403,11 @@ if rootWidget then
   healWindow.healer.items.addItem.onClick = function(widget)
  
     local id = healWindow.healer.items.itemId:getItemId()
+    local thing = g_things.getThingType(id)
+    local subType = g_game.getClientVersion() >= 860 and 0 or 1
+    if thing and thing:isFluidContainer() then
+      subType = healWindow.healer.items.itemId:getItem():getSubType()
+    end
     local trigger = tonumber(healWindow.healer.items.itemValue:getText())
     local src = healWindow.healer.items.itemSource:getCurrentOption().text
     local eq = healWindow.healer.items.itemCondition:getCurrentOption().text
@@ -436,7 +442,7 @@ if rootWidget then
     end
 
     if id > 100 then
-      table.insert(currentSettings.itemTable, {index = #currentSettings.itemTable+1,item = id, sign = equasion, origin = source, value = trigger, enabled = true})
+      table.insert(currentSettings.itemTable, {index = #currentSettings.itemTable+1,item = id, sign = equasion, origin = source, value = trigger, enabled = true, subType = subType})
       standBySpells = false
       standByItems = false
       refreshItems()
@@ -641,57 +647,57 @@ macro(100, function()
     if (not currentSettings.Visible or item) and entry.enabled then
       if entry.origin == "HP%" then
         if entry.sign == "=" and hppercent() == entry.value then
-          g_game.useInventoryItemWith(entry.item, player)
+          g_game.useInventoryItemWith(entry.item, player, entry.subType)
           return
         elseif entry.sign == ">" and hppercent() >= entry.value then
-          g_game.useInventoryItemWith(entry.item, player)
+          g_game.useInventoryItemWith(entry.item, player, entry.subType)
           return
         elseif entry.sign == "<" and hppercent() <= entry.value then
-          g_game.useInventoryItemWith(entry.item, player)
+          g_game.useInventoryItemWith(entry.item, player, entry.subType)
           return
         end
       elseif entry.origin == "HP" then
         if entry.sign == "=" and hp() == tonumberentry.value then
-          g_game.useInventoryItemWith(entry.item, player)
+          g_game.useInventoryItemWith(entry.item, player, entry.subType)
           return
         elseif entry.sign == ">" and hp() >= entry.value then
-          g_game.useInventoryItemWith(entry.item, player)
+          g_game.useInventoryItemWith(entry.item, player, entry.subType)
           return
         elseif entry.sign == "<" and hp() <= entry.value then
-          g_game.useInventoryItemWith(entry.item, player)
+          g_game.useInventoryItemWith(entry.item, player, entry.subType)
           return
         end
       elseif entry.origin == "MP%" then
         if entry.sign == "=" and manapercent() == entry.value then
-          g_game.useInventoryItemWith(entry.item, player)
+          g_game.useInventoryItemWith(entry.item, player, entry.subType)
           return
         elseif entry.sign == ">" and manapercent() >= entry.value then
-          g_game.useInventoryItemWith(entry.item, player)
+          g_game.useInventoryItemWith(entry.item, player, entry.subType)
           return
         elseif entry.sign == "<" and manapercent() <= entry.value then
-          g_game.useInventoryItemWith(entry.item, player)
+          g_game.useInventoryItemWith(entry.item, player, entry.subType)
           return
         end
       elseif entry.origin == "MP" then
         if entry.sign == "=" and mana() == entry.value then
-          g_game.useInventoryItemWith(entry.item, player)
+          g_game.useInventoryItemWith(entry.item, player, entry.subType)
           return
         elseif entry.sign == ">" and mana() >= entry.value then
-          g_game.useInventoryItemWith(entry.item, player)
+          g_game.useInventoryItemWith(entry.item, player, entry.subType)
           return
         elseif entry.sign == "<" and mana() <= entry.value then
-          g_game.useInventoryItemWith(entry.item, player)
+          g_game.useInventoryItemWith(entry.item, player, entry.subType)
           return
         end   
       elseif entry.origin == "burst" then
         if entry.sign == "=" and burstDamageValue() == entry.value then
-          g_game.useInventoryItemWith(entry.item, player)
+          g_game.useInventoryItemWith(entry.item, player, entry.subType)
           return
         elseif entry.sign == ">" and burstDamageValue() >= entry.value then
-          g_game.useInventoryItemWith(entry.item, player)
+          g_game.useInventoryItemWith(entry.item, player, entry.subType)
           return
         elseif entry.sign == "<" and burstDamageValue() <= entry.value then
-          g_game.useInventoryItemWith(entry.item, player)
+          g_game.useInventoryItemWith(entry.item, player, entry.subType)
           return
         end   
       end

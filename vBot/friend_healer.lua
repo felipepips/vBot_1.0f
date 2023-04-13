@@ -1,4 +1,4 @@
-setDefaultTab("Main")
+setDefaultTab("Hp")
 local panelName = "newHealer"
 local ui = setupUI([[
 Panel

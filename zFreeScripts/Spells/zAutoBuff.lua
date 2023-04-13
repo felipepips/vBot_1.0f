@@ -18,8 +18,8 @@ https://trainorcreations.com/coding/otclient/27
 -- ATENCIÓN:
 -- No cambies nada desde aquí, solamente si sabes lo que estás haciendo.
 
--- setDefaultTab("Tools")
--- UI.Separator()
+setDefaultTab("HP")
+
 
 local buffUi = setupUI([[
 Panel
@@ -64,7 +64,7 @@ SpellName < Label
 
 spellListWindow < MainWindow
   text: Auto Buff by F.Almeida
-  size: 220 350
+  size: 220 355
   @onEscape: self:hide()
 
   Label
@@ -76,7 +76,6 @@ spellListWindow < MainWindow
     text-align: center
     margin-top: -5
     text: Icon Position:
-    color: green
 
   Label
     id: lblPosX
@@ -87,7 +86,6 @@ spellListWindow < MainWindow
     width: 40
     height: 20
     !text: ('Pos X: ')
-    color: green
 
   SpinBox
     id: ipx
@@ -100,7 +98,6 @@ spellListWindow < MainWindow
     step: 10
     editable: true
     focusable: true
-    color: green
 
   Label
     id: lblPosY
@@ -111,7 +108,6 @@ spellListWindow < MainWindow
     text-align: center
     width: 40
     !text: ('Pos Y: ')
-    color: green
 
   SpinBox
     id: ipy
@@ -124,7 +120,6 @@ spellListWindow < MainWindow
     step: 10
     editable: true
     focusable: true
-    color: green
 
   Label
     id: lblEx
@@ -134,7 +129,6 @@ spellListWindow < MainWindow
     height: 20
     text-align: center
     text: Default Exhausted:
-    color: orange
 
   SpinBox
     id: ex
@@ -148,7 +142,6 @@ spellListWindow < MainWindow
     editable: true
     focusable: true
     text-align: center
-    color: orange
 
   Label
     id: lblSpells
@@ -219,7 +212,7 @@ spellListWindow < MainWindow
     anchors.top: prev.bottom
     margin-top: 6
     text: Stop if attacking
-    tooltip: Only cast buff if not attacking any creature
+    tooltip: Only cast buff if not attacking any creature.
 
   CheckBox
     id: checkPz
@@ -228,7 +221,15 @@ spellListWindow < MainWindow
     anchors.top: prev.bottom
     margin-top: 6
     text: Stop if in PZ
-    tooltip: Only cast buff if not in Protection Zone
+    tooltip: Only cast buff if not in Protection Zone.
+
+  CheckBox
+    id: createIcon
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: prev.bottom
+    margin-top: 6
+    text: Create Icon
 
   HorizontalSeparator
     id: separator
@@ -262,10 +263,11 @@ local panelName = "autoBuff"
 if not storage[panelName] then
   storage[panelName] = {
     iconPosX = 200,
-    iconPosY = 70,
+    iconPosY = 170,
     exhausted = 1001,
     spellList = {"set some spell first, 3000"},
     enabled = false,
+    icon = false,
     atk = false,
     pz = true,
   }
@@ -349,6 +351,12 @@ if rootWidget then
     widget:setChecked(config.pz)
   end
 
+  spellListWindow.createIcon:setChecked(config.icon)
+  spellListWindow.createIcon.onClick = function(widget)
+    config.icon = not config.icon
+    widget:setChecked(config.icon)
+  end
+
   spellListWindow.spellEntry.onKeyPress = function(self, keyCode, keyboardModifiers)
     if not (keyCode == 5) then
       return false
@@ -390,6 +398,9 @@ if rootWidget then
   end)
   icon.text:setFont('verdana-11px-rounded')
   icon:breakAnchors()
+  if not config.icon then
+    icon:hide()
+  end
   
   -- main loops
   -- switches
@@ -397,6 +408,11 @@ if rootWidget then
     icon.setOn(config.enabled)
     buffUi.status:setOn(config.enabled)
     icon:move(config.iconPosX,config.iconPosY)
+    if config.icon then
+      icon:show()
+    else
+      icon:hide()
+    end
   end)
   -- auto buff
   macro(500,function()
@@ -427,4 +443,4 @@ if rootWidget then
   end)
 end
 
-UI.Separator()
+-- UI.Separator()

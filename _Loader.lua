@@ -10,48 +10,51 @@ for i, file in ipairs(configFiles) do
 end
 
 local function loadScript(name)
-  return dofile("/vBot/" .. name .. ".lua")
+  return dofile("/" .. name .. ".lua")
 end
 
 -- here you can set manually order of scripts
 -- libraries should be loaded first
 local luaFiles = {
-  "main",
-  "items",
-  "vlib",
-  "new_cavebot_lib",
-  "configs", -- do not change this and above
-  "extras",
-  "cavebot",
-  "playerlist",
-  "BotServer",
-  "alarms",
-  "Conditions",
-  "Equipper",
-  "pushmax",
-  "combo",
-  "HealBot",
-  "new_healer",
-  "AttackBot", -- last of major modules
-  "ingame_editor",
-  "Dropper",
-  "Containers",
-  "quiver_manager",
-  "quiver_label",
-  "tools",
-  "antiRs",
-  "depot_withdraw",
-  "eat_food",
-  "equip",
-  "exeta",
-  "analyzer",
-  "spy_level",
-  "supplies",
-  "depositer_config",
-  "npc_talk",
-  "xeno_menu",
-  "hold_target",
-  "cavebot_control_panel"
+  "vBot/main",
+  "vBot/items",
+  "vBot/vlib",
+  "vBot/new_cavebot_lib",
+  "vBot/configs", -- do not change this and above
+  "vBot/extras",
+  "vBot/extrasPvp",
+  "vBot/cave_target_settings",
+  "vBot/cavebot",
+  "vBot/playerlist",
+  "vBot/alarms",
+  "vBot/AttackBot", -- last of major modules
+  "vBot/BotServer",
+  "vBot/combo",
+  "vBot/Conditions",
+  "vBot/Equipper",
+  "vBot/friend_healer",
+  "zFreeScripts/Spells/zAutoBuff",
+  "vBot/HealBot",
+  "vBot/Dropper",
+  "zFreeScripts/Party/z_Auto-Party",
+  "vBot/ContainerManager",
+  "vBot/quiver_manager",
+  "vBot/quiver_label",
+  "vBot/tools",
+  "vBot/antiRs",
+  "vBot/depot_withdraw",
+  "vBot/eat_food",
+  "vBot/equip",
+  "vBot/exeta",
+  "vBot/analyzer",
+  "vBot/spy_level",
+  "vBot/supplies",
+  "vBot/depositer_config",
+  "vBot/npc_talk",
+  "vBot/xeno_menu",
+  "vBot/cavebot_control_panel",
+  "vBot/ingame_editor",
+  "zFreeScripts/Misc/SkillsHUD",
 }
 
 for i, file in ipairs(luaFiles) do
@@ -59,6 +62,8 @@ for i, file in ipairs(luaFiles) do
 end
 
 setDefaultTab("Main")
-UI.Separator()
-UI.Label("Private Scripts:")
+-- UI.Separator()
+local label = UI.Label("Custom Scripts:")
+-- label:setColor('yellow')
+-- label:setFont('verdana-11px-rounded')
 UI.Separator()

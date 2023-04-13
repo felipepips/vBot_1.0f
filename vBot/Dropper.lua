@@ -60,9 +60,21 @@ Panel
     anchors.top: prev.bottom
     margin-top: 5
     anchors.left: parent.left
-    anchors.right: parent.right
+    margin-top: 5
     text-align: center
-    text: Drop if below 150 cap:
+    width: 120
+    text: Drop if Cap below:
+    height: 17
+
+  BotTextEdit
+    id: minCap
+    height: 17
+    anchors.top: prev.top
+    anchors.left: prev.right
+    anchors.right: parent.right
+    margin-left: 3
+    editable: true
+    text-align: center
 
   BotContainer
     id: CapItems
@@ -76,13 +88,15 @@ edit:hide()
 if not storage.dropper then
     storage.dropper = {
       enabled = false,
-      trashItems = { 283, 284, 285 },
-      useItems = { 21203, 14758 },
-      capItems = { 21175 }
+      trashItems = { 3354, 3358, 3410, 3286, 3264 },
+      useItems = { 3061 },
+      capItems = { 3359 },
+      minCap = "100"
     }
 end
 
 local config = storage.dropper
+if not config.minCap then config.minCap = "100" end
 
 local showEdit = false
 ui.edit.onClick = function(widget)
@@ -115,6 +129,11 @@ UI.Container(function()
     end, true, nil, edit.CapItems) 
 edit.CapItems:setItems(config.capItems)
 
+edit.minCap:setText(config.minCap)
+edit.minCap.onTextChange = function(widget, text)
+    config.minCap = text
+end
+
 local function properTable(t)
     local r = {}
   
@@ -134,7 +153,7 @@ macro(200, function()
             for __, item in ipairs(container:getItems()) do
                 for ___, userItem in ipairs(tables[i]) do
                     if item:getId() == userItem then
-                        return i == 1 and freecap() < 150 and dropItem(item) or
+                        return i == 1 and freecap() < tonumber(config.minCap) and dropItem(item) or
                                i == 2 and use(item) or
                                i == 3 and dropItem(item)
                     end
@@ -144,3 +163,5 @@ macro(200, function()
     end
 
 end)
+
+UI.Separator()

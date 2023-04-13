@@ -46,18 +46,22 @@ local forceRefill = UI.Button("Force Refill", function(widget)
     storage.caveBot.forceRefill = true
     print("[CaveBot] Going back on refill on next supply check.")
 end, panel.buttons)
+forceRefill:setTooltip('Force leave hunt in the next supply check')
 
 local backStop = UI.Button("Back & Stop", function(widget)
     storage.caveBot.backStop = true
     print("[CaveBot] Going back to city on next supply check and turning off CaveBot on depositer action.")
 end, panel.buttons)
+backStop:setTooltip('Turn OFF CaveBot after deposit.')
 
 local backTrainers = UI.Button("To Trainers", function(widget)
     storage.caveBot.backTrainers = true
     print("[CaveBot] Going back to city on next supply check and going to label 'toTrainers' on depositer action.")
 end, panel.buttons)
+backTrainers:setTooltip("Go to label 'toTrainers' after deposit.")
 
 local backOffline = UI.Button("Offline", function(widget)
     storage.caveBot.backOffline = true
     print("[CaveBot] Going back to city on next supply check and going to label 'toOfflineTraining' on depositer action.")
 end, panel.buttons)
+backOffline:setTooltip("Go to label 'toOfflineTraining' after deposit.")

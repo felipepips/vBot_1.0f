@@ -54,6 +54,16 @@ end
 TargetBot.Creature.getConfigs = function(creature)
   if not creature then return {} end
   local name = creature:getName():trim():lower()
+  -- ignore list
+  if storage.extras.ignoreCreatures then
+    local ignoreList = string.split(storage.extras.ignoreCreatures, ",")
+    for k, v in ipairs(ignoreList) do
+      if v:lower():trim() == name then
+        creature:setText("ignore")
+        return {}
+      end
+    end
+  end 
   -- this function may be slow, so it will be using cache
   if TargetBot.Creature.configsCache[name] then
     return TargetBot.Creature.configsCache[name]
@@ -85,6 +95,12 @@ TargetBot.Creature.calculateParams = function(creature, path)
       selectedConfig = config
     end
   end
+  -- reachable
+  -- if distanceFromPlayer(creature:getPosition()) > 1 then
+    if storage.extras.reachable and not findPath(pos(),creature:getPosition(),storage.extras.looting,{ignoreCreatures = false, precision = 1}) then
+      priority = 1
+    end
+  -- end
   return {
     config = selectedConfig,
     creature = creature,

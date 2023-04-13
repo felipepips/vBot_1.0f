@@ -162,6 +162,16 @@ ui.showConfig.onClick = function()
   end
 end
 
+ui.autoRecording.onClick = function()
+  if ui.autoRecording:isOn() then
+    CaveBot.Recorder.disable()
+    ui.autoRecording:setOn(false)
+  else
+    CaveBot.Recorder.enable()
+    ui.autoRecording:setOn(true)
+  end
+end
+
 -- public function, you can use them in your scripts
 CaveBot.isOn = function()
   return config.isOn()

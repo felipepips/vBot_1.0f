@@ -1,4 +1,4 @@
-ExtrasScrollBar < Panel
+CaveBotConfigsScrollBar < Panel
   height: 28
   margin-top: 3
 
@@ -19,7 +19,7 @@ ExtrasScrollBar < Panel
     maximum: 10
     step: 1
 
-ExtrasTextEdit < Panel
+CaveBotConfigsTextEdit < Panel
   height: 40
   margin-top: 7
 
@@ -41,7 +41,7 @@ ExtrasTextEdit < Panel
     step: 1
     text-align: center
 
-ExtrasItem < Panel
+CaveBotConfigsItem < Panel
   height: 34
   margin-top: 7
   margin-left: 25
@@ -58,12 +58,12 @@ ExtrasItem < Panel
     anchors.right: parent.right
 
 
-ExtrasCheckBox < BotSwitch
+CaveBotConfigsCheckBox < BotSwitch
   height: 20
   margin-top: 7
 
-ExtrasWindow < MainWindow
-  !text: tr('Extras')
+CaveBotConfigsWindow < MainWindow
+  !text: tr('CaveBot & TargetBot Settings')
   size: 440 360
   padding: 25
 
@@ -72,14 +72,14 @@ ExtrasWindow < MainWindow
     anchors.right: parent.horizontalCenter
     anchors.top: parent.top
     text-align: center
-    text: < Use Items >
+    text: < Settings >
 
   Label
     anchors.left: parent.horizontalCenter
     anchors.right: parent.right
     anchors.top: parent.top
     text-align: center
-    text: < Miscellaneous >
+    text: < Scripts >
 
   VerticalScrollBar
     id: contentScroll

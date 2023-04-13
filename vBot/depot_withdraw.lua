@@ -74,3 +74,5 @@ if playerContainer and freecap() >= 200 then
 end
 
 end)
+
+UI.Separator()

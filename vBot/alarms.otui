@@ -31,7 +31,7 @@ AlarmCheckBoxAndSpinBox < Panel
     anchors.bottom: parent.bottom
     anchors.right: parent.right
     width: 40
-    minimum: 0
+    minimum: 1
     maximum: 100
     step: 1
     editable: true
@@ -62,7 +62,7 @@ AlarmCheckBoxAndTextEdit < Panel
 
 AlarmsWindow < MainWindow
   !text: tr('Alarms')
-  size: 330 400
+  size: 330 440
   padding: 15
   @onEscape: self:hide()
 

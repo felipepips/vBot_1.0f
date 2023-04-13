@@ -23,15 +23,15 @@ ui.config.right:setText("-")
 ui.danger.left:setText("Danger:")
 ui.danger.right:setText("0")
 
-ui.editor.debug.onClick = function()
-  local on = ui.editor.debug:isOn()
-  ui.editor.debug:setOn(not on)
-  if on then
-    for _, spec in ipairs(getSpectators()) do
-      spec:clearText()
-    end
-  end
-end
+-- ui.editor.debug.onClick = function()
+--   local on = ui.editor.debug:isOn()
+--   ui.editor.debug:setOn(not on)
+--   if on then
+--     for _, spec in ipairs(getSpectators()) do
+--       spec:clearText()
+--     end
+--   end
+-- end
 
 local oldTibia = g_game.getClientVersion() < 960
 
@@ -67,7 +67,7 @@ targetbotMacro = macro(100, function()
             highestPriority = params.priority
             highestPriorityParams = params
           end
-          if ui.editor.debug:isOn() then
+          if storage.extras.showTargetPriority then
             creature:setText(params.config.name .. "\n" .. params.priority)
           end
         end
@@ -102,6 +102,11 @@ targetbotMacro = macro(100, function()
     TargetBot.walk()
     lastAction = now
     return
+  elseif isInPz() then
+    if g_game.isAttacking() then
+      g_game.cancelAttack()
+      return
+    end
   end
 
   ui.target.right:setText("-")
@@ -326,3 +331,5 @@ end
 TargetBot.canLure = function()
   return lureEnabled
 end
+
+UI.Separator()

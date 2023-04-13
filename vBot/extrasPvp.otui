@@ -1,4 +1,4 @@
-ExtrasScrollBar < Panel
+ExtrasPvpScrollBar < Panel
   height: 28
   margin-top: 3
 
@@ -19,7 +19,7 @@ ExtrasScrollBar < Panel
     maximum: 10
     step: 1
 
-ExtrasTextEdit < Panel
+ExtrasPvpTextEdit < Panel
   height: 40
   margin-top: 7
 
@@ -41,7 +41,7 @@ ExtrasTextEdit < Panel
     step: 1
     text-align: center
 
-ExtrasItem < Panel
+ExtrasPvpItem < Panel
   height: 34
   margin-top: 7
   margin-left: 25
@@ -58,13 +58,13 @@ ExtrasItem < Panel
     anchors.right: parent.right
 
 
-ExtrasCheckBox < BotSwitch
+ExtrasPvpCheckBox < BotSwitch
   height: 20
   margin-top: 7
 
-ExtrasWindow < MainWindow
-  !text: tr('Extras')
-  size: 440 360
+ExtrasPvpWindow < MainWindow
+  !text: tr('Extras PVP')
+  size: 440 420
   padding: 25
 
   Label
@@ -72,14 +72,14 @@ ExtrasWindow < MainWindow
     anchors.right: parent.horizontalCenter
     anchors.top: parent.top
     text-align: center
-    text: < Use Items >
+    text: < Settings >
 
   Label
     anchors.left: parent.horizontalCenter
     anchors.right: parent.right
     anchors.top: parent.top
     text-align: center
-    text: < Miscellaneous >
+    text: < Scripts >
 
   VerticalScrollBar
     id: contentScroll

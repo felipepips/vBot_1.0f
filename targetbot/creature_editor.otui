@@ -64,7 +64,7 @@ TargetBotCreatureEditorCheckBox < BotSwitch
 TargetBotCreatureEditorWindow < MainWindow
   text: TargetBot creature editor
   width: 500
-  height: 425
+  height: 515
   
   $mobile:
     height: 300
@@ -146,7 +146,7 @@ TargetBotCreatureEditorWindow < MainWindow
     anchors.bottom: parent.bottom
     anchors.left: parent.left
     width: 150
-    @onClick: g_platform.openUrl("http://bot.otclient.ovh/")
+    @onClick: g_platform.openUrl("https://discord.com/channels/628769144925585428/877436752736944181/912360435305578496")
 
   Button
     id: ok

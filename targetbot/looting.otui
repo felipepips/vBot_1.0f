@@ -28,7 +28,7 @@ TargetBotLootingPanel < Panel
   BotContainer
     id: containers
     margin-top: 3
-    height: 45
+    height: 34
   
   Panel
     id: maxDangerPanel

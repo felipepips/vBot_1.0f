@@ -240,5 +240,3 @@ if config.vocation and BotServer._websocket then
   BotServer.send("voc", player:getVocation())
   BotServer.send("voc", "yes")
 end
-
-addSeparator()

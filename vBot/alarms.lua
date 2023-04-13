@@ -1,3 +1,4 @@
+setDefaultTab("Tools")
 local panelName = "alarms"
 local ui = setupUI([[
 Panel
@@ -64,19 +65,20 @@ addAlarm = function(id, title, defaultValue, alarmType, parent, tooltip)
   widget:setId(id)
 
   if type(config[id]) ~= 'table' then
-    config[id] = {}
+    config[id] = {
+      enabled = alarmType == 1 and defaultValue or false,
+      value = alarmType == 2 and defaultValue or nil,
+      text = alarmType == 3 and defaultValue or nil,
+    }
   end
 
   widget.tick:setText(title)
   widget.tick:setChecked(config[id].enabled)
   widget.tick:setTooltip(tooltip)
+  
   widget.tick.onClick = function()
     config[id].enabled = not config[id].enabled
     widget.tick:setChecked(config[id].enabled)
-  end
-
-  if alarmType > 1 and type(config[id].value) == 'nil' then
-    config[id].value = defaultValue
   end
 
   if alarmType == 2 then
@@ -96,11 +98,13 @@ end
 -- settings
 addAlarm("ignoreFriends", "Ignore Friends", true, 1, 2)
 addAlarm("flashClient", "Flash Client", true, 1, 2)
+addAlarm("alarmIcon", "Create Icon", true, 1, 2)
 
 -- alarm list
-addAlarm("damageTaken", "Damage Taken", false, 1, 1)
+addAlarm("lowSupplies", "Low Supplies", false, 1, 1, "You have to configure 'Supply Settings' in CaveBot.")
 addAlarm("lowHealth", "Low Health", 20, 2, 1)
 addAlarm("lowMana", "Low Mana", 20, 2, 1)
+addAlarm("damageTaken", "Damage Taken", false, 1, 1)
 addAlarm("playerAttack", "Player Attack", false, 1, 1)
 
 UI.Separator(window.list)
@@ -123,9 +127,11 @@ local function alarm(file, windowText)
 
   if not g_resources.fileExists(file) then
     file = "/sounds/alarm.ogg"
+  end
+  
+  if file == "/sounds/alarm.ogg" then
     lastCall = now + 4000 -- alarm.ogg length is 6s
   end
-
   
   if modules.game_bot.g_app.getOs() == "windows" and config.flashClient.enabled then
     g_window.flash()
@@ -160,7 +166,7 @@ onTextMessage(function(mode, text)
   end
 end)
 
--- default & private message
+-- default, private message & custom message
 onTalk(function(name, level, mode, text, channelId, pos)
   if not config.enabled then return end
   if name == player:getName() then return end -- ignore self messages
@@ -173,10 +179,28 @@ onTalk(function(name, level, mode, text, channelId, pos)
   if mode == 4 and config.privateMsg.enabled then
     return alarm("/sounds/Private_Message.ogg", "Private Message!")
   end
+
+  if config.customMessage.enabled then
+    local alertText = config.customMessage.value
+    if alertText:len() > 0 then
+      text = text:lower()
+      local parts = string.split(alertText, ",")
+
+      for i=1,#parts do
+        local part = parts[i]
+        part = part:trim()
+        part = part:lower()
+
+        if text:find(part) then
+          return alarm('/sounds/magnum.ogg', "Special Message!")
+        end
+      end
+    end
+  end
 end)
 
--- health & mana
-macro(100, function() 
+-- health, mana, specs & supplies
+macro(500, function() 
   if not config.enabled then return end
   if config.lowHealth.enabled then
     if hppercent() < config.lowHealth.value then
@@ -187,6 +211,12 @@ macro(100, function()
   if config.lowMana.enabled then
     if hppercent() < config.lowMana.value then
       return alarm("/sounds/Low_Mana.ogg", "Low Mana!")
+    end
+  end
+
+  if config.lowSupplies.enabled then
+    if hasSupplies() ~= true then
+      return alarm("/sounds/alarm.ogg", "Low Supplies!")
     end
   end
 
@@ -221,3 +251,57 @@ macro(100, function()
     end
   end
 end)
+
+Alarms = {} -- global table
+
+Alarms.isOff = function()
+  return not config.enabled
+end
+
+Alarms.isOn = function()
+  return config.enabled
+end
+
+Alarms.setOff = function()
+  config.enabled = false
+  ui.title:setOn(config.enabled)
+end
+
+Alarms.setOn = function()
+  config.enabled = true
+  ui.title:setOn(config.enabled)
+end
+
+-- icon
+if true then
+  aIcon = addIcon("aI",{text="Alarms",switchable=false,moveable=true}, function()
+    if Alarms.isOff() then 
+      Alarms.setOn()
+    else 
+      Alarms.setOff()
+    end
+  end)
+  aIcon:setSize({height=30,width=50})
+  aIcon.text:setFont('verdana-11px-rounded')
+  aIcon:breakAnchors()
+  aIcon:move(200,135)
+  aIcon:hide()
+
+  macro(50,function()
+    local a = config.alarmIcon.enabled
+    if a then
+      aIcon:show()
+      if Alarms.isOn() then
+        aIcon.text:setColor('green')
+        aIcon.text:setText('Alarms\nON')
+      else
+        aIcon.text:setColor('red')
+        aIcon.text:setText('Alarms\nOFF')
+      end
+    else
+      aIcon:hide()
+    end
+  end)
+end
+
+UI.Separator()

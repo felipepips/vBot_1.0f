@@ -273,7 +273,7 @@ ItemHealing < FlatPanel
     id: useItem
     anchors.left: isItem.left
     anchors.top: isItem.bottom
-    text: Use  
+    text: Use Item:
     margin-top: 15
     font: verdana-11px-rounded
 

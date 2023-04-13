@@ -1,3 +1,4 @@
+-- setDefaultTab(storage.extras.joinBot and "Cave" or "Target")
 setDefaultTab("Main")
 local panelName = "combobot"
 local ui = setupUI([[
@@ -441,3 +442,5 @@ if BotServer._websocket and config.enabled and config.serverEnabled then
    end
   end)
 end
+
+addSeparator()

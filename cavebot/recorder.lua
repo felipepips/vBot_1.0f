@@ -55,7 +55,7 @@ CaveBot.Recorder.enable = function()
   if isEnabled == nil then
     setup()
   end
-  CaveBot.Editor.ui.autoRecording:setOn(true)
+  -- CaveBot.Editor.ui.autoRecording:setOn(true)
   isEnabled = true
   lastPos = nil
 end
@@ -64,6 +64,6 @@ CaveBot.Recorder.disable = function()
   if isEnabled == true then
     isEnabled = false
   end
-  CaveBot.Editor.ui.autoRecording:setOn(false)
+  -- CaveBot.Editor.ui.autoRecording:setOn(false)
   CaveBot.save()
 end
