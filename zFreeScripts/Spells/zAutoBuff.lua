@@ -20,7 +20,6 @@ https://trainorcreations.com/coding/otclient/27
 
 setDefaultTab("HP")
 
-
 local buffUi = setupUI([[
 Panel
   height: 20
@@ -178,7 +177,7 @@ spellListWindow < MainWindow
     anchors.right: parent.right
     margin-top: 5
     text-align: center
-    text: Example: Utito Tempo, 10000
+    text: Example: Utito Tempo, 10
     
   TextEdit
     id: spellEntry
@@ -265,7 +264,7 @@ if not storage[panelName] then
     iconPosX = 200,
     iconPosY = 170,
     exhausted = 1001,
-    spellList = {"set some spell first, 3000"},
+    spellList = {"set some spell first, 10"},
     enabled = false,
     icon = false,
     atk = false,
@@ -328,7 +327,7 @@ if rootWidget then
           end
         end
       else
-        warn('You must insert: spell name, cooldown (in ms: 1000 = 1s)')
+        warn('You must insert: spell name, cooldown (in seconds)')
       end
     end
   end
@@ -422,7 +421,7 @@ if rootWidget then
 
     for e, entry in pairs(config.spellList) do
       local spell = entry:split(",")[1]
-      local cd = tonumber(entry:split(",")[2])
+      local cd = tonumber(entry:split(",")[2]) * 1000
       -- fix for vbot bug
       local a,b,c = modules.gamelib.Spells.getSpellByWords(spell)
       local Spells = modules.gamelib.SpellInfo['Default']
