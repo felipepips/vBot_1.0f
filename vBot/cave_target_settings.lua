@@ -188,11 +188,9 @@ if true then
     if c then
       cIcon:show()
       if CaveBot.isOn() then
-        cIcon.text:setColor('green')
-        cIcon.text:setText('CaveBot\nON')
+        cIcon.text:setColoredText({"CaveBot\n","white","ON","green"})
       else
-        cIcon.text:setColor('red')
-        cIcon.text:setText('CaveBot\nOFF')
+        cIcon.text:setColoredText({"CaveBot\n","white","OFF","red"})
       end
     else
       cIcon:hide()
@@ -200,11 +198,9 @@ if true then
     if t then
       tIcon:show()
       if TargetBot.isOn() then
-        tIcon.text:setColor('green')
-        tIcon.text:setText('Target\nON')
+        tIcon.text:setColoredText({"Target\n","white","ON","green"})
       else
-        tIcon.text:setColor('red')
-        tIcon.text:setText('Target\nOFF')
+        tIcon.text:setColoredText({"Target\n","white","OFF","red"})
       end
     else
       tIcon:hide()

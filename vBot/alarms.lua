@@ -292,11 +292,9 @@ if true then
     if a then
       aIcon:show()
       if Alarms.isOn() then
-        aIcon.text:setColor('green')
-        aIcon.text:setText('Alarms\nON')
+        aIcon.text:setColoredText({"Alarms\n","white","ON","green"})
       else
-        aIcon.text:setColor('red')
-        aIcon.text:setText('Alarms\nOFF')
+        aIcon.text:setColoredText({"Alarms\n","white","OFF","red"})
       end
     else
       aIcon:hide()
