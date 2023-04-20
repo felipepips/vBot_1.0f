@@ -518,6 +518,7 @@ if not AttackBotConfig[panelName] or not AttackBotConfig[panelName][1] or #Attac
       name = "Profile #1",
       Cooldown = true,
       Visible = true,
+      OldSchool = false,
       pvpMode = false,
       KillsAmount = 1,
       PvpSafe = true,
@@ -533,6 +534,7 @@ if not AttackBotConfig[panelName] or not AttackBotConfig[panelName][1] or #Attac
       name = "Profile #2",
       Cooldown = true,
       Visible = true,
+      OldSchool = false,
       pvpMode = false,
       KillsAmount = 1,
       PvpSafe = true,
@@ -548,6 +550,7 @@ if not AttackBotConfig[panelName] or not AttackBotConfig[panelName][1] or #Attac
       name = "Profile #3",
       Cooldown = true,
       Visible = true,
+      OldSchool = false,
       pvpMode = false,
       KillsAmount = 1,
       PvpSafe = true,
@@ -563,6 +566,7 @@ if not AttackBotConfig[panelName] or not AttackBotConfig[panelName][1] or #Attac
       name = "Profile #4",
       Cooldown = true,
       Visible = true,
+      OldSchool = false,
       pvpMode = false,
       KillsAmount = 1,
       PvpSafe = true,
@@ -578,6 +582,7 @@ if not AttackBotConfig[panelName] or not AttackBotConfig[panelName][1] or #Attac
       name = "Profile #5",
       Cooldown = true,
       Visible = true,
+      OldSchool = false,
       pvpMode = false,
       KillsAmount = 1,
       PvpSafe = true,
@@ -907,6 +912,10 @@ end
     currentSettings.Visible = not currentSettings.Visible
     settingsUI.Visible:setChecked(currentSettings.Visible)
   end
+  settingsUI.OldSchool.onClick = function(widget)
+    currentSettings.OldSchool = not currentSettings.OldSchool
+    settingsUI.OldSchool:setChecked(currentSettings.OldSchool)
+  end
   settingsUI.PvpMode.onClick = function(widget)
     currentSettings.pvpMode = not currentSettings.pvpMode
     settingsUI.PvpMode:setChecked(currentSettings.pvpMode)
@@ -969,6 +978,7 @@ end
     -- settings
     settingsUI.profileName:setText(currentSettings.name)
     settingsUI.Visible:setChecked(currentSettings.Visible)
+    settingsUI.OldSchool:setChecked(currentSettings.OldSchool)
     settingsUI.Cooldown:setChecked(currentSettings.Cooldown)
     settingsUI.PvpMode:setChecked(currentSettings.pvpMode)
     settingsUI.PvpSafe:setChecked(currentSettings.PvpSafe)
@@ -1130,8 +1140,15 @@ function executeAttackBotAction(categoryOrPos, idOrFormula, cooldown)
   cooldown = cooldown or 0
   if categoryOrPos == 4 or categoryOrPos == 5 or categoryOrPos == 1 then
     cast(idOrFormula, cooldown)
-  elseif categoryOrPos == 3 then 
-    useWith(idOrFormula, target())
+  elseif categoryOrPos == 3 then
+    if currentSettings.OldSchool then
+      local item = findItem(idOrFormula)
+      if item then
+        useWith(item, target())
+      end
+    else
+      useWith(idOrFormula, target())
+    end
   end
 end
 

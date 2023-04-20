@@ -390,6 +390,11 @@ HealBotSettingsPanel < Panel
       id: MessageDelay
       text: Cooldown based on "Aaaah..." message
 
+    SettingCheckBox
+      id: OldSchool
+      text: Old School Mode (No Hotkeys)
+      !tooltip: tr('Items Must be Visible')
+
   VerticalSeparator
     anchors.top: prev.top
     anchors.bottom: prev.bottom

@@ -442,6 +442,15 @@ SettingsPanel < Panel
     margin-left: 20
     margin-right: 20
 
+  CheckBox
+    id: OldSchool
+    anchors.top: prev.bottom
+    anchors.left: prev.left
+    margin-top: 8
+    width: 245
+    text: Old School Mode (No Hotkeys)
+    !tooltip: tr('Items Must be Visible')
+
   Button
     id: resetSettings
     anchors.right: parent.right

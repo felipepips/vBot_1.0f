@@ -89,6 +89,7 @@ if not HealBotConfig[healPanelName] or not HealBotConfig[healPanelName][1] or #H
       itemTable = {},
       name = "Profile #1",
       Visible = true,
+      OldSchool = false,
       Cooldown = true,
       Interval = true,
       Conditions = true,
@@ -101,6 +102,7 @@ if not HealBotConfig[healPanelName] or not HealBotConfig[healPanelName][1] or #H
       itemTable = {},
       name = "Profile #2",
       Visible = true,
+      OldSchool = false,
       Cooldown = true,
       Interval = true,
       Conditions = true,
@@ -113,6 +115,7 @@ if not HealBotConfig[healPanelName] or not HealBotConfig[healPanelName][1] or #H
       itemTable = {},
       name = "Profile #3",
       Visible = true,
+      OldSchool = false,
       Cooldown = true,
       Interval = true,
       Conditions = true,
@@ -125,6 +128,7 @@ if not HealBotConfig[healPanelName] or not HealBotConfig[healPanelName][1] or #H
       itemTable = {},
       name = "Profile #4",
       Visible = true,
+      OldSchool = false,
       Cooldown = true,
       Interval = true,
       Conditions = true,
@@ -137,6 +141,7 @@ if not HealBotConfig[healPanelName] or not HealBotConfig[healPanelName][1] or #H
       itemTable = {},
       name = "Profile #5",
       Visible = true,
+      OldSchool = false,
       Cooldown = true,
       Interval = true,
       Conditions = true,
@@ -219,6 +224,10 @@ if rootWidget then
     currentSettings.Visible = not currentSettings.Visible
     healWindow.settings.list.Visible:setChecked(currentSettings.Visible)
   end
+  healWindow.settings.list.OldSchool.onClick = function(widget)
+    currentSettings.OldSchool = not currentSettings.OldSchool
+    healWindow.settings.list.OldSchool:setChecked(currentSettings.OldSchool)
+  end
   healWindow.settings.list.Cooldown.onClick = function(widget)
     currentSettings.Cooldown = not currentSettings.Cooldown
     healWindow.settings.list.Cooldown:setChecked(currentSettings.Cooldown)
@@ -285,7 +294,7 @@ if rootWidget then
           label:destroy()
         end
         label.id:setItemId(entry.item)
-        label.subType:setItemSubType(entry.subType)
+        label.id:setItemSubType(entry.subType)
         label:setText(entry.origin .. entry.sign .. entry.value .. ": " .. entry.item)
       end
     end
@@ -462,6 +471,7 @@ if rootWidget then
     refreshSpells()
     refreshItems()
     healWindow.settings.list.Visible:setChecked(currentSettings.Visible)
+    healWindow.settings.list.OldSchool:setChecked(currentSettings.OldSchool)
     healWindow.settings.list.Cooldown:setChecked(currentSettings.Cooldown)
     healWindow.settings.list.Delay:setChecked(currentSettings.Delay)
     healWindow.settings.list.MessageDelay:setChecked(currentSettings.MessageDelay)
@@ -482,6 +492,7 @@ if rootWidget then
     currentSettings.spellTable = {}
     currentSettings.itemTable = {}
     currentSettings.Visible = true
+    currentSettings.OldSchool = false
     currentSettings.Cooldown = true
     currentSettings.Delay = true
     currentSettings.MessageDelay = false
@@ -644,60 +655,61 @@ macro(100, function()
 
   for _, entry in pairs(currentSettings.itemTable) do
     local item = findItem(entry.item)
-    if (not currentSettings.Visible or item) and entry.enabled then
+    if (not currentSettings.Visible or item) and (currentSettings.OldSchool or item) and entry.enabled then
+      local useItem = currentSettings.OldSchool and item or entry.item
       if entry.origin == "HP%" then
         if entry.sign == "=" and hppercent() == entry.value then
-          g_game.useInventoryItemWith(entry.item, player, entry.subType)
+          useWith(useItem, player, entry.subType)
           return
         elseif entry.sign == ">" and hppercent() >= entry.value then
-          g_game.useInventoryItemWith(entry.item, player, entry.subType)
+          useWith(useItem, player, entry.subType)
           return
         elseif entry.sign == "<" and hppercent() <= entry.value then
-          g_game.useInventoryItemWith(entry.item, player, entry.subType)
+          useWith(useItem, player, entry.subType)
           return
         end
       elseif entry.origin == "HP" then
         if entry.sign == "=" and hp() == tonumberentry.value then
-          g_game.useInventoryItemWith(entry.item, player, entry.subType)
+          useWith(useItem, player, entry.subType)
           return
         elseif entry.sign == ">" and hp() >= entry.value then
-          g_game.useInventoryItemWith(entry.item, player, entry.subType)
+          useWith(useItem, player, entry.subType)
           return
         elseif entry.sign == "<" and hp() <= entry.value then
-          g_game.useInventoryItemWith(entry.item, player, entry.subType)
+          useWith(useItem, player, entry.subType)
           return
         end
       elseif entry.origin == "MP%" then
         if entry.sign == "=" and manapercent() == entry.value then
-          g_game.useInventoryItemWith(entry.item, player, entry.subType)
+          useWith(useItem, player, entry.subType)
           return
         elseif entry.sign == ">" and manapercent() >= entry.value then
-          g_game.useInventoryItemWith(entry.item, player, entry.subType)
+          useWith(useItem, player, entry.subType)
           return
         elseif entry.sign == "<" and manapercent() <= entry.value then
-          g_game.useInventoryItemWith(entry.item, player, entry.subType)
+          useWith(useItem, player, entry.subType)
           return
         end
       elseif entry.origin == "MP" then
         if entry.sign == "=" and mana() == entry.value then
-          g_game.useInventoryItemWith(entry.item, player, entry.subType)
+          useWith(useItem, player, entry.subType)
           return
         elseif entry.sign == ">" and mana() >= entry.value then
-          g_game.useInventoryItemWith(entry.item, player, entry.subType)
+          useWith(useItem, player, entry.subType)
           return
         elseif entry.sign == "<" and mana() <= entry.value then
-          g_game.useInventoryItemWith(entry.item, player, entry.subType)
+          useWith(useItem, player, entry.subType)
           return
         end   
       elseif entry.origin == "burst" then
         if entry.sign == "=" and burstDamageValue() == entry.value then
-          g_game.useInventoryItemWith(entry.item, player, entry.subType)
+          useWith(useItem, player, entry.subType)
           return
         elseif entry.sign == ">" and burstDamageValue() >= entry.value then
-          g_game.useInventoryItemWith(entry.item, player, entry.subType)
+          useWith(useItem, player, entry.subType)
           return
         elseif entry.sign == "<" and burstDamageValue() <= entry.value then
-          g_game.useInventoryItemWith(entry.item, player, entry.subType)
+          useWith(useItem, player, entry.subType)
           return
         end   
       end
