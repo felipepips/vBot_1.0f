@@ -257,3 +257,5 @@ onKeyDown(function(keys)
     target = nil
   end
 end)
+
+UI.Separator()
