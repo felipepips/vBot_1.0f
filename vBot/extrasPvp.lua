@@ -202,8 +202,8 @@ end
 
 -- PUSH MAX
 addItem("vsRune", "VS Anti-Push", 3188, leftPanel, "Field rune to throw on target if trashed, to allow pushing.")
-addScrollBar("vsDelay", "Push Delay", 1, 3000, 1000, leftPanel, "Default delay for pushing.")
-addCheckBox("pushMax", "Push Max", true, rightPanel, "Mark players and destionations with below hotkey to push target.")
+addScrollBar("vsDelay", "Push Delay", 1, 3000, 1100, leftPanel, "Default delay for pushing.")
+addCheckBox("pushMax", "Push Max", false, rightPanel, "Mark players and destionations with below hotkey to push target.")
 addTextEdit("pushHot", "Push Max Hotkey:", "PageUp", rightPanel)
 if true then
   local config = {
@@ -418,65 +418,50 @@ end
 
 -- HOLD TARGET
 addCheckBox("holdTarget", "Hold Target", true, rightPanel, "Hold Target (press ESC to cancel attack).")
--- addTextEdit("holdIconPos", "Icon Position:", "200,200", rightPanel, "Restart Bot to change position.\nLeave it blank if you don't want an icon.")
+addTextEdit("holdIconPos", "Icon Position:", "200,200", rightPanel, "Restart Bot to change position.\nLeave it blank if you don't want an icon.\nPut any other text to let you move where you want.")
 if true then
   local targetID = nil
 
-  -- escape when attacking will reset hold target
-  -- onKeyPress(function(keys)
-  --     if keys == "Escape" and targetID then
-  --         targetID = nil
-  --     end
-  -- end)
-
-  -- icon
-  -- local iconHoldTarget = addIcon("Hold",
-  -- {item=3547, hotkey="Escape", movable=true, text="Cancel\nAttack", switchable=false},
-  -- function(icon,isOn)
-  --   targetID = nil
-  --   if g_game.isAttacking() then
-  --     g_game.cancelAttack()
-  --   end
-  -- end)
-  -- iconHoldTarget.text:setFont('verdana-11px-rounded')
-  -- iconHoldTarget.text:setColor("orange")
-  -- iconHoldTarget.hotkey:setFont('verdana-11px-rounded')
-  -- iconHoldTarget.hotkey:setColor("orange")
-  -- iconHoldTarget.hotkey:setText('Esc')
-  -- iconHoldTarget:breakAnchors()
-  -- local split = settings.holdIconPos:split(",")
-  -- if split[2] then
-  --   local x, y = tonumber(split[1]), tonumber(split[2])
-  --   if x and y then
-  --     iconHoldTarget:move(x,y)
-  --   end
-  -- else
-  --   iconHoldTarget:hide()
-  -- end
+  -- 'Escape' when attacking will reset hold target
+  onKeyPress(function(keys)
+    if keys == "Escape" and targetID then
+      targetID = nil
+    end
+  end)
 
   local holdTarg = macro(100, function()
-    if not settings.holdTarget then
-      -- iconHoldTarget:hide()
-      return
-    -- elseif split[2] then
-      -- iconHoldTarget:show()
-    end
+    if not settings.holdTarget then return end
     -- if attacking then save it as target, but check pos z in case of marking by mistake on other floor
     if target() and target():getPosition().z == posz() and not target():isNpc() then
       targetID = target():getId()
     elseif not target() then
       -- there is no saved data, do nothing
       if not targetID then return end
-
       -- look for target
       for i, spec in ipairs(getSpectators()) do
         local sameFloor = spec:getPosition().z == posz()
         local oldTarget = spec:getId() == targetID
-        
         if sameFloor and oldTarget then
           attack(spec)
         end
       end
     end
   end)
+
+  -- icon
+  local iconHoldTarget = addIcon("Hold",
+  {outfit={mount=0,feet=94,legs=94,body=94,type=129,auxType=0,addons=3,head=94}, movable=true, text="Hold\nTarget"}, holdTarg)
+  iconHoldTarget.text:setFont('verdana-11px-rounded')
+  iconHoldTarget:setSize({height = 70, width = 45})
+  local split = settings.holdIconPos:split(",")
+  if split[2] then
+  local x, y = tonumber(split[1]), tonumber(split[2])
+  if x and y then
+    iconHoldTarget:breakAnchors()
+    iconHoldTarget:move(x,y)
+  end
+  elseif settings.holdIconPos == "" then
+    iconHoldTarget:hide()
+    if settings.holdTarget then holdTarg:setOn() end
+  end
 end
