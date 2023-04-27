@@ -103,37 +103,57 @@ addCheckBox("reachable", "Target only pathable mobs", false, rightPanel, "Ignore
 
 addCheckBox("stake", "Skin Monsters", false, rightPanel, "Automatically skin & stake corpses when cavebot is enabled")
 if true then
-  local knifeBodies = {4286, 4272, 4173, 4011, 4025, 4047, 4052, 4057, 4062, 4112, 4212, 4321, 4324, 4327, 10352, 10356, 10360, 10364} 
-  local stakeBodies = {4097, 4137, 8738, 18958}
-  local fishingBodies = {9582}
-  macro(250, function()
-      if not CaveBot.isOn() or not settings.stake then return end
-      local tiles = g_map.getTiles(posz())
-      if TargetBot then
-        if TargetBot.isActive() then
-          tiles = getNearTiles(pos())
+    -- START CONFIG
+  local exhausted = 550
+  local maxDistance = 6
+  local config = {
+    [5908] = { -- Obsidian Knife
+      4286, 4272, 4173, 4011, 4025, 4047, 4052, 4057, 4062, 4112, 4212, 4321, 4324, 4327, 10352, 10356, 10360, 10364,
+    },
+    [5942] = { -- blessed wooden stake
+      4097, 4137, 8738, 18958,
+    },
+    [3483] = { -- fishing
+      9582
+    }
+  }
+  -- END CONFIG
+
+  local function lookAround()
+    local t = {}
+    for x = -maxDistance,maxDistance do
+      for y = -maxDistance,maxDistance do
+        if x ~= 0 or y ~= 0 then
+          local p = pos()
+          p.x, p.y =  p.x + x, p.y + y
+          if findPath(pos(),p,maxDistance) then
+            local tile = g_map.getTile(p)
+            if tile then
+              table.insert(t,tile)
+            end
+          end
         end
       end
-      for i, tile in ipairs(tiles) do
-        local item = tile:getTopThing()
-        if item and item:isContainer() then
-          if table.find(knifeBodies, item:getId()) and findItem(5908) then
-              CaveBot.delay(550)
-              useWith(5908, item)
-              return
-          end
-          if table.find(stakeBodies, item:getId()) and findItem(5942) then
-              CaveBot.delay(550)
-              useWith(5942, item)
-              return
-          end
-          if table.find(fishingBodies, item:getId()) and findItem(3483) then
-              CaveBot.delay(550)
-              useWith(3483, item)
-              return
+    end
+    return t
+  end
+
+  macro(250,function()
+    if not settings.stake then return end
+    if not CaveBot or not CaveBot.isOn() then return end
+    local tiles = (TargetBot and TargetBot.isActive()) and getNearTiles(pos()) or lookAround()
+    for t, tile in ipairs(tiles) do
+      local top = tile:getTopUseThing()
+      if top and top:isContainer() then
+        for stake, items in pairs(config) do
+          if table.find(items,top:getId()) then
+            CaveBot.delay(exhausted)
+            useWith(stake, top)
+            return
           end
         end
       end
+    end
   end)
 end
 
