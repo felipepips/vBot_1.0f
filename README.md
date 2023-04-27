@@ -22,8 +22,11 @@ V 1.0
 7- Add "Full AFK" feature in Container Manager
 8- New Feature: "Auto-Party"
 9- New Feature: "Auto-Buff"
-10- Add editable 'min. capacity' in Dropper.
+10- Add editable 'min. capacity' in Dropper
 11- New Feature: Skills HUD
 12- Fixed some bugs & UI in AttackBot
 13- Add 'Old School Mode' in AttackBot & HealBot
-14- Fixed 'Hold Target' bug and added Icon.
+14- Fixed 'Hold Target' bug and added Icon
+15- Add 'Check RL Conditions' in Friend Healer
+16- Fixed 'Custom Spell' in Friend Healer
+17- Improved 'Skin/Stake' bodies
