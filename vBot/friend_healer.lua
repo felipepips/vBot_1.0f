@@ -35,6 +35,7 @@ if not storage[panelName] then
         customPlayers = {},
         vocations = {},
         groups = {},
+        sCheckRL = false,
         priorities = {
 
             {name="Custom Spell",           enabled=false, custom=true},
@@ -85,6 +86,14 @@ ui.edit.onClick = function()
     healerWindow:show()
     healerWindow:raise()
     healerWindow:focus()
+end
+
+-- Modified by F.Almeida
+-- Switch, stop in PZ
+healerWindow.sCheckRL:setOn(config.sCheckRL)
+healerWindow.sCheckRL.onClick = function(widget)
+  config.sCheckRL = not config.sCheckRL
+  widget:setOn(config.sCheckRL)
 end
 
 local conditions = healerWindow.conditions
@@ -355,7 +364,8 @@ local function friendHealerAction(spec, targetsInRange)
 
     for i, action in ipairs(config.priorities) do
         if action.enabled then
-            if action.area and masResAmount <= targetsInRange and canCast("exura gran mas res") then
+          if action.area and masResAmount <= targetsInRange and canCast("exura gran mas res", not sCheckRL) then
+            print("oi")
                 return say("exura gran mas res")
             end
             if action.mana and findItem(manaItem) and mana <= normalHeal and dist <= itemRange and now - lastItemUse > 1000 then
@@ -369,8 +379,8 @@ local function friendHealerAction(spec, targetsInRange)
             if action.strong and health <= strongHeal and not modules.game_cooldown.isCooldownIconActive(101) then
                 return say('exura gran sio "'..name)
             end
-            if (action.normal or action.custom) and health <= normalHeal and canCast('exura sio "'..name) then
-                return say('exura sio "'..name)
+            if (action.normal or action.custom) and health <= normalHeal and canCast(action.name..' "'..name) then
+                return say(action.name..' "'..name)
             end
         end
     end
@@ -388,7 +398,7 @@ local function isCandidate(spec)
     if curHp == 100 or (config.customPlayers[name] and curHp > config.customPlayers[name]) then
         return false
     end
-
+    
     local specText = spec:getText()
     local name = spec:getName()
     -- check players is enabled and spectator already verified
@@ -407,9 +417,8 @@ local function isCandidate(spec)
     local okFriend = config.conditions.friends and isFriend(spec)
     local okGuild = config.conditions.guild and spec:getEmblem() == 1
     local okBotServer = config.conditions.botserver and vBot.BotServerMembers[spec:getName()]
-
     if not (okParty or okFriend or okGuild or okBotServer) then
-        return nil
+      return nil
     end
 
     local health = config.customPlayers[name] and curHp/2 or curHp
@@ -440,6 +449,7 @@ macro(100, function()
         local health, dist = isCandidate(spec)
         --mas san
         if dist then
+          
             inMasResRange = dist <= 3 and inMasResRange+1 or inMasResRange
 
             -- best target

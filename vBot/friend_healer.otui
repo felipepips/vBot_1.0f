@@ -411,3 +411,13 @@ FriendHealer < MainWindow
     anchors.bottom: parent.bottom
     size: 45 21
     @onClick: self:getParent():hide()    
+
+  BotSwitch
+    id: sCheckRL
+    !text: tr('Check RL Conditions')
+    anchors.left: parent.left
+    margin-left: 5 
+    size: 120 20
+    font: verdana-11px-rounded  
+    anchors.top: closeButton.top 
+    margin-top: 1
