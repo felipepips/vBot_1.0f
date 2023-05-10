@@ -104,7 +104,7 @@ addCheckBox("reachable", "Target only pathable mobs", false, rightPanel, "Ignore
 addCheckBox("stake", "Skin Monsters", false, rightPanel, "Automatically skin & stake corpses when cavebot is enabled")
 if true then
     -- START CONFIG
-  local exhausted = 550
+  local exhausted = 350
   local maxDistance = 6
   local config = {
     [5908] = { -- Obsidian Knife
@@ -120,38 +120,47 @@ if true then
   -- END CONFIG
 
   local function lookAround()
-    local t = {}
-    for x = -maxDistance,maxDistance do
-      for y = -maxDistance,maxDistance do
+    local maxLook = (TargetBot and TargetBot.isActive()) and 1 or maxDistance
+    for x = -maxLook,maxLook do
+      for y = -maxLook,maxLook do
         if x ~= 0 or y ~= 0 then
           local p = pos()
           p.x, p.y =  p.x + x, p.y + y
-          if findPath(pos(),p,maxDistance) then
+          local path = findPath(pos(),p,maxDistance)
+          if path then
             local tile = g_map.getTile(p)
             if tile then
-              table.insert(t,tile)
+              local top = tile:getTopUseThing()
+              if top and top:isContainer() then
+                for stake, items in pairs(config) do
+                  local findStake = findItem(stake)
+                  if findStake then
+                    if table.find(items,top:getId()) then
+                      local wait = #path * exhausted
+                      CaveBot.delay(wait + exhausted)
+                      return tile, findStake, wait
+                    end
+                  end
+                end
+              end
             end
           end
         end
       end
     end
-    return t
+    return false
   end
 
-  macro(250,function()
+  macro(exhausted,function()
     if not settings.stake then return end
     if not CaveBot or not CaveBot.isOn() then return end
-    local tiles = (TargetBot and TargetBot.isActive()) and getNearTiles(pos()) or lookAround()
-    for t, tile in ipairs(tiles) do
+    local tile, stake, wait = lookAround()
+    if tile then
       local top = tile:getTopUseThing()
       if top and top:isContainer() then
-        for stake, items in pairs(config) do
-          if table.find(items,top:getId()) then
-            CaveBot.delay(exhausted)
-            useWith(stake, top)
-            return
-          end
-        end
+        useWith(stake, top)
+        delay(wait)
+        return
       end
     end
   end)

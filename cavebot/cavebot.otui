@@ -12,9 +12,14 @@ CaveBotPanel < Panel
     type: verticalBox
     fit-children: true
 
+  BotSwitch
+    id: autoRecording
+    text: Auto Recording
+    margin-bottom: 2      
+
   HorizontalSeparator
     margin-top: 2
-    margin-bottom: 5
+    margin-bottom: 1
     
   Panel
     id: listPanel
@@ -36,12 +41,7 @@ CaveBotPanel < Panel
       anchors.bottom: parent.bottom
       anchors.right: parent.right
       pixels-scroll: true
-      step: 10
-
-  BotSwitch
-    id: autoRecording
-    text: Auto Recording
-    margin-top: 3      
+      step: 10  
     
   BotSwitch
     id: showEditor

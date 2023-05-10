@@ -920,27 +920,8 @@ local mainLoop = macro(defaultDelay, function(m)
       end
     end
   end
-  -- m:setOff()
 end)
 mainLoop:setOn()
-
--- onContainerOpen(function(container, previousContainer)
---     mainLoop:setOn()
--- end)
-  
--- onAddItem(function(container, slot, item, oldItem)
---     mainLoop:setOn()
--- end)
-
--- onPlayerInventoryChange(function(slot, item, oldItem)
---     mainLoop:setOn()
--- end)
-
--- onContainerClose(function(container)
---     if not container.lootContainer then
---         mainLoop:setOn()
---     end
--- end)
 
 if cManager.isOn() then reopenContainers() end
 UI.Separator()

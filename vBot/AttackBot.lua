@@ -1,5 +1,5 @@
 -- setDefaultTab(storage.extras.joinBot and "Cave" or "Target")
-setDefaultTab("Main")
+setDefaultTab("Target")
 -- UI.Separator()
 -- locales
 local panelName = "AttackBot"
@@ -755,6 +755,7 @@ end
       end
       -- will serve as edit
       widget.onDoubleClick = function(widget)
+        panel.monsters:setText(params.creatures)
         panel.manaPercent:setValue(params.mana)
         panel.creatures:setValue(params.count)
         panel.minHp:setValue(params.minHp)
@@ -961,7 +962,7 @@ end
     panel.creatures:setText(1)
     panel.minHp:setValue(0)
     panel.maxHp:setValue(100)
-    panel.cooldown:setText(1)
+    panel.cooldown:setText(1000)
     panel.monsters:setText("monster names")
     panel.itemId:setItemId(0)
     panel.spellName:setText("spell name")

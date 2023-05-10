@@ -23,10 +23,13 @@ TargetBot.Creature.calculatePriority = function(creature, config, path)
   
   -- extra priority for close distance
   local path_length = #path
-  if path_length == 1 then
-    priority = priority + 10
-  elseif path_length <= 3 then
-    priority = priority + 5
+  local max_increase_by_distance = 10
+  local max_distance = 5
+  if isTrapped() and path_length == 1 then
+    priority = priority + (2 * max_increase_by_distance) -- double extra priority if trapped
+  elseif path_length <= max_distance then
+    local calc = (max_distance - path_length + 1) / max_distance * max_increase_by_distance
+    priority = priority + calc
   end
 
   -- extra priority for paladin diamond arrows
@@ -45,16 +48,13 @@ TargetBot.Creature.calculatePriority = function(creature, config, path)
   end
 
   -- extra priority for low health
-  if config.chase and creature:getHealthPercent() < 30 then
-    priority = priority + 5
-  elseif creature:getHealthPercent() < 20 then
-    priority = priority + 2.5
-  elseif creature:getHealthPercent() < 40 then
-    priority = priority + 1.5
-  elseif creature:getHealthPercent() < 60 then
-    priority = priority + 0.5
-  elseif creature:getHealthPercent() < 80 then
-    priority = priority + 0.2
+  local max_increase_by_health = 10
+  local hp = creature:getHealthPercent()
+  if config.chase and hp < 30 then
+    priority = priority + max_increase_by_health
+  else
+    local calc = (100 - hp) / 100 * max_increase_by_health
+    priority = priority + calc
   end
 
   return priority
