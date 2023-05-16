@@ -500,7 +500,7 @@ if rootWidget then
 
   -- minimize all
   CM.mainMinimize.onClick = function(widget)
-    for i, container in ipairs(g_game.getContainers()) do
+    for i, container in pairs(g_game.getContainers()) do
       local cWindow = container.window
       cWindow:setContentHeight(34)
       cWindow:minimize()
@@ -800,12 +800,14 @@ end
 
 -- Full AFK functions
 -- Check if have enough opened containers to proceed
-local function checkBps()
-  if #g_game.getContainers() +1 < config.qtdFullAfk then 
+local function checkBps(noWarn)
+  if table.size(g_game.getContainers()) < config.qtdFullAfk then 
     warn(tag.."Not Enough BPs.. Retrying")
     reopenContainers()
   else
-    warn(tag.."Enough BPs: Continue")
+    if not noWarn then
+      warn(tag.."Enough BPs: Continue")
+    end
     if config.pausedCave then
       CaveBot.setOn()
       config.pausedCave = false
@@ -831,6 +833,9 @@ local function pauseAfk()
   end
   checkBps()
 end
+
+-- Open Next Table
+local containersToOpen = {}
 
 -- Reopen Containers (this one must be Global)
 function reopenContainers()
@@ -872,16 +877,24 @@ onContainerOpen(function(container, previousContainer)
     if nextPageButton then nextPageButton.onClick() end
   end
 
-  -- open next
+  if settings.eOpenNext then
+    for i, item in ipairs(container:getItems()) do
+      if table.find(cList,item:getId()) then
+        table.insert(containersToOpen,item)
+      end
+    end
+  end
+
+  --[[ open next
   local time = 0
   if settings.eOpenNext then
-    local old = #g_game.getContainers()
+    local old = table.size(g_game.getContainers())
     for i, item in ipairs(container:getItems()) do
       if table.find(cList,item:getId()) then
         schedule(time, function()
           g_game.open(item)
           schedule(defaultDelay - 5, function()
-            if #g_game.getContainers() <= old then g_game.open(item) end
+            if table.size(g_game.getContainers()) <= old then g_game.open(item) end
           end)
         end)
         time = time + defaultDelay
@@ -891,10 +904,23 @@ onContainerOpen(function(container, previousContainer)
   -- no new containers to open, let's check purse, loot & quiver
   if time == 0 then
     schedule(defaultDelay, openMain)
-  end
+  end]]
 end)
 
-local mainLoop = macro(defaultDelay, function(m)
+
+local openNextMacro = macro(defaultDelay,function()
+  if cManager:isOff() then return end
+  local old = table.size(g_game.getContainers())
+  for e, entry in pairs(containersToOpen) do
+    table.remove(containersToOpen,e)
+    g_game.open(entry,nil)
+    delay(defaultDelay + 5)
+    return
+  end
+  openMain()
+end)
+
+local sortItemsMacro = macro(defaultDelay, function(m)
   if cManager:isOn() and config.sortItems then
     for c, cont in pairs(g_game.getContainers()) do
       local cName = cont:getName()
@@ -921,7 +947,14 @@ local mainLoop = macro(defaultDelay, function(m)
     end
   end
 end)
-mainLoop:setOn()
+
+-- Full AFK loop
+macro(20000,function()
+  if cManager.isOn() and config.onFullAfk then
+    checkBps(true)
+	  delay(config.qtdFullAfk * defaultDelay)
+  end
+end)
 
 if cManager.isOn() then reopenContainers() end
 UI.Separator()
