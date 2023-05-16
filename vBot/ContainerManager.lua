@@ -884,27 +884,6 @@ onContainerOpen(function(container, previousContainer)
       end
     end
   end
-
-  --[[ open next
-  local time = 0
-  if settings.eOpenNext then
-    local old = table.size(g_game.getContainers())
-    for i, item in ipairs(container:getItems()) do
-      if table.find(cList,item:getId()) then
-        schedule(time, function()
-          g_game.open(item)
-          schedule(defaultDelay - 5, function()
-            if table.size(g_game.getContainers()) <= old then g_game.open(item) end
-          end)
-        end)
-        time = time + defaultDelay
-      end
-    end
-  end
-  -- no new containers to open, let's check purse, loot & quiver
-  if time == 0 then
-    schedule(defaultDelay, openMain)
-  end]]
 end)
 
 
