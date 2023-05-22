@@ -66,6 +66,7 @@ ExtrasWindow < MainWindow
   !text: tr('Extras')
   size: 440 360
   padding: 25
+  @onEscape: self:hide()
 
   Label
     anchors.left: parent.left

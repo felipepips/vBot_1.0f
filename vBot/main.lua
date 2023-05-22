@@ -43,10 +43,12 @@ local texts = {'Revamped vBot by F.Almeida','Based on vBot 4.8 by Vithrax'}
 for e, entry in pairs(texts) do
   local label = UI.Label(entry)
   label:setFont('verdana-11px-rounded')
-  label:setColor('gray')
+  label:setColor('#9dd1ce')
 end
 
-UI.Button("Official OTCv8 Discord", function() g_platform.openUrl("https://discord.gg/yhqBE4A") end)
+local btDisc = UI.Button("Official OTCv8 Discord", function() g_platform.openUrl("https://discord.gg/yhqBE4A") end)
+btDisc:setColor("#9dd1ce")
+btDisc:setFont('verdana-11px-rounded')
 UI.Separator()
 
 

@@ -87,11 +87,12 @@ local addScrollBar = function(id, title, min, max, defaultValue, dest, tooltip)
   widget.scroll.onValueChange(widget.scroll, widget.scroll:getValue())
 end
 
-UI.Button("Extras (Basic Scripts)", function()
+local btExtras = UI.Button("Extras (Basic Scripts)", function()
   extrasWindow:show()
   extrasWindow:raise()
   extrasWindow:focus()
-end):setColor('green')
+end)
+btExtras:setImageColor("#9799a8")
 
 addItem("rope", "Rope Item", 3003, leftPanel, "This item will be used in various bot related scripts as default rope item.")
 addItem("shovel", "Shovel Item", 3457, leftPanel, "This item will be used in various bot related scripts as default shovel item.")

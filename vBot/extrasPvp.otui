@@ -66,6 +66,7 @@ ExtrasPvpWindow < MainWindow
   !text: tr('Extras PVP')
   size: 440 420
   padding: 25
+  @onEscape: self:hide()
 
   Label
     anchors.left: parent.left

@@ -77,11 +77,12 @@ local addScrollBar = function(id, title, min, max, defaultValue, dest, tooltip)
   widget.scroll.onValueChange(widget.scroll, widget.scroll:getValue())
 end
 
-UI.Button("Extras (PVP Scripts)", function()
+local btExtrasPvp = UI.Button("Extras (PVP Scripts)", function()
   extrasPvp:show()
   extrasPvp:raise()
   extrasPvp:focus()
-end):setColor('orange')
+end)
+btExtrasPvp:setImageColor("orange")
 UI.Separator()
 
 addItem("mwRune", "MW Rune", 3180, leftPanel, "Magic Wall Rune.")

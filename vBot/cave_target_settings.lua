@@ -77,11 +77,14 @@ local addScrollBar = function(id, title, min, max, defaultValue, dest, tooltip)
   widget.scroll.onValueChange(widget.scroll, widget.scroll:getValue())
 end
 
-UI.Button('CaveBot & Target Settings', function()
+local btCave = UI.Button('CaveBot & Target Settings', function()
   CaveBotConfigsWindow:show()
   CaveBotConfigsWindow:raise()
   CaveBotConfigsWindow:focus()
-end):setColor('orange')
+end)
+btCave:setColor('orange')
+btCave:setImageColor('#2de0d7')
+btCave:setFont("verdana-11px-rounded")
 UI.Separator()
 
 --- to maintain order, add options right after another:
