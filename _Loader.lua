@@ -28,13 +28,15 @@ local luaFiles = {
   "vBot/playerlist",
   "vBot/alarms",
   "vBot/AttackBot", -- last of major modules
-  "vBot/BotServer",
-  "vBot/combo",
+  -- "vBot/BotServer",
+  -- "vBot/combo",
   "vBot/Conditions",
   "vBot/Equipper",
   "vBot/friend_healer",
   "zFreeScripts/Spells/zAutoBuff",
   "vBot/HealBot",
+  -- "vBot/Heal-Old",
+  "vBot/mana_train",
   "vBot/Dropper",
   "zFreeScripts/Party/z_Auto-Party",
   "vBot/ContainerManager",
@@ -53,8 +55,8 @@ local luaFiles = {
   "vBot/npc_talk",
   "vBot/xeno_menu",
   "vBot/cavebot_control_panel",
-  "vBot/ingame_editor",
   "zFreeScripts/Misc/SkillsHUD",
+  "vBot/ingame_editor",
 }
 
 for i, file in ipairs(luaFiles) do
@@ -62,8 +64,7 @@ for i, file in ipairs(luaFiles) do
 end
 
 setDefaultTab("Main")
--- UI.Separator()
 local label = UI.Label("Custom Scripts:")
--- label:setColor('yellow')
--- label:setFont('verdana-11px-rounded')
+label:setColor('#9dd1ce')
+label:setFont('verdana-11px-rounded')
 UI.Separator()
