@@ -5,7 +5,6 @@ local cGreen = '#00FF00' -- green color for UI
 local cRed = '#FF0000' -- red color for UI
 local tag = "[Container Manager]\n" -- used for console log
 local purseId = 23396 -- purse ID
-local lootId = 23721 -- loot bag ID
 local slotsQuiver = {getAmmo(), getLeft(), getRight()} -- where should we look for a quiver?
 local defaultDelay = 300 -- never less than 250
 local ignoreContainers = {"depot","locker","inbox"}
@@ -34,7 +33,7 @@ if type(storage[panelName]) ~= "table" then
   storage[panelName] = {
     openBack = true,
     openPurse = false,
-    openLoot = false,
+    reopenAtLogin = true,
     openQuiver = false,
     sortItems = true,
     qtdFullAfk = 1,
@@ -106,7 +105,7 @@ Panel
 
   Button
     id: mainReopen
-    !text: tr('Reopen All')
+    !text: tr('Re-Open All')
     anchors.left: parent.left
     anchors.top: prev.bottom
     anchors.right: parent.horizontalCenter
@@ -214,10 +213,21 @@ BackpackName < Label
     tooltip: Inifinite Container: Move items even if it's full
 
   Button
+    id: eFull
+    !text: tr('F')
+    font: verdana-11px-rounded
+    anchors.right: eInfinite.left
+    anchors.verticalCenter: parent.verticalCenter
+    margin-right: 1
+    width: 15
+    height: 15
+    tooltip: Open Next Container (same id) only when it's full
+
+  Button
     id: ePages
     !text: tr('P')
     font: verdana-11px-rounded
-    anchors.right: eInfinite.left
+    anchors.right: eFull.left
     anchors.verticalCenter: parent.verticalCenter
     margin-right: 1
     width: 15
@@ -370,11 +380,11 @@ CMUI < MainWindow
     font: verdana-11px-rounded
 
   CheckBox
-    id: openLoot
+    id: reopenAtLogin
     anchors.left: prev.right
     anchors.bottom: parent.bottom
-    text: Loot Bag
-    tooltip: Open Loot Bag (id 23721)
+    text: ReOpen
+    tooltip: Close and Reopen all containers at login or bot restart
     width: 70
     height: 15
     margin-top: 2
@@ -386,7 +396,7 @@ CMUI < MainWindow
     anchors.left: prev.right
     anchors.bottom: parent.bottom
     text: Quiver
-    !tooltip: tr("Open Quiver (Item on hands or ammo slot\nthat contains 'quiver' in the name)")
+    !tooltip: tr("Open Quiver (Container on hand or ammo slot)")
     width: 70
     height: 15
     margin-top: 2
@@ -535,29 +545,29 @@ if rootWidget then
 
   -- Open Back
   CMUI.openBack.onClick = function(widget)
-      config.openBack = not config.openBack
-      CMUI.openBack:setChecked(config.openBack)
+    config.openBack = not config.openBack
+    CMUI.openBack:setChecked(config.openBack)
   end
   CMUI.openBack:setChecked(config.openBack)
 
   -- Open Purse
   CMUI.openPurse.onClick = function(widget)
-      config.openPurse = not config.openPurse
-      CMUI.openPurse:setChecked(config.openPurse)
+    config.openPurse = not config.openPurse
+    CMUI.openPurse:setChecked(config.openPurse)
   end
   CMUI.openPurse:setChecked(config.openPurse)
   
   -- Open Loot Bag
-  CMUI.openLoot.onClick = function(widget)
-      config.openLoot = not config.openLoot
-      CMUI.openLoot:setChecked(config.openLoot)
+  CMUI.reopenAtLogin.onClick = function(widget)
+    config.reopenAtLogin = not config.reopenAtLogin
+    CMUI.reopenAtLogin:setChecked(config.reopenAtLogin)
   end
-  CMUI.openLoot:setChecked(config.openLoot)
+  CMUI.reopenAtLogin:setChecked(config.reopenAtLogin)
 
   -- Open Quiver
   CMUI.openQuiver.onClick = function(widget)
-      config.openQuiver = not config.openQuiver
-      CMUI.openQuiver:setChecked(config.openQuiver)
+    config.openQuiver = not config.openQuiver
+    CMUI.openQuiver:setChecked(config.openQuiver)
   end
   CMUI.openQuiver:setChecked(config.openQuiver)
 
@@ -742,60 +752,61 @@ local function moveItem(item, destination, index)
 end
 
 -- Check if quiver is open
+local function isMainOpened()
+  local mainId = nil
+  local slot = getBack()
+  if slot and slot:isContainer() then
+    mainId = slot:getId()
+  end
+  if mainId and getContainerByItem(mainId) then
+    return true
+  end
+  return false
+end
+
+-- Check if quiver is open
 local function isQuiverOpened()
-  for c, cont in pairs(g_game.getContainers()) do
-    if string.find(cont:getName():lower(),"quiver") then
-      return true
+  local quiverId = nil
+  local t = slotsQuiver
+  for i=1,#t do
+    local slot = t[i]
+    if slot and slot:isContainer() then
+      quiverId = slot:getId()
+      break
     end
   end
+  if quiverId and getContainerByItem(quiverId) then
+    return true
+  end
+  return false
 end
 
 -- Open Main Containers: Back, Purse, Bag and Quiver
 local function openMain()
+
   -- Open Main BackPack
-  if not okBack then
-    if getBack() then
-      g_game.use(getBack())
-    end
-    okBack = true
+  if not isMainOpened() then
+    g_game.use(getBack())
 
   -- Open Quiver
-  elseif not okQuiver then
-    if not isQuiverOpened() then
-      local t = slotsQuiver
-      for i=1,#t do
-        local slot = t[i]
-        if slot and slot:isContainer() then
-          g_game.use(slot)
-          break
-        end
+  elseif not isQuiverOpened() then
+    local t = slotsQuiver
+    for i=1,#t do
+      local slot = t[i]
+      if slot and slot:isContainer() then
+        g_game.use(slot)
+        break
       end
-    else
-      okQuiver = true
     end
 
   -- Open Purse
-  elseif not okPurse then
-    if not getContainerByItem(purseId) then
-      local purse = getPurse()
-      if purse and purse:isContainer() then
-        g_game.use(purse)
-      end
-    else
-      okPurse = true
-    end
-
-  -- Open Loot Bag
-  elseif not okLoot then
-    if not getContainerByItem(lootId) then
-      local loot = findItem(lootId)
-      if loot and loot:isContainer() then
-        g_game.use(loot)
-      end
-    else
-      okLoot = true
+  elseif not getContainerByItem(purseId) then
+    local purse = getPurse()
+    if purse and purse:isContainer() then
+      g_game.use(purse)
     end
   end
+  
 end
 
 -- Full AFK functions
@@ -836,6 +847,8 @@ end
 
 -- Open Next Table
 local containersToOpen = {}
+-- Containers with pages table
+local pageContainers = {}
 
 -- Reopen Containers (this one must be Global)
 function reopenContainers()
@@ -846,12 +859,7 @@ function reopenContainers()
       pauseAfk()
     end)
   end
-  -- Variables to check if already opened Back, Purse, Bag and Quiver
-  okBack = not config.openBack
-  okPurse = not config.openPurse
-  okLoot = not config.openLoot
-  okQuiver = not config.openQuiver
-  schedule(defaultDelay,function()
+  schedule(defaultDelay * 2,function()
     openMain()
   end)
 end
@@ -873,8 +881,10 @@ onContainerOpen(function(container, previousContainer)
 
   -- auto next page
   if settings.ePages and container:hasPages() then
-    local nextPageButton = cont.window:recursiveGetChildById('nextPageButton')
-    if nextPageButton then nextPageButton.onClick() end
+    local nextPageButton = container.window:recursiveGetChildById('nextPageButton')
+    if nextPageButton then 
+      table.insert(pageContainers,container)
+    end
   end
 
   if settings.eOpenNext then
@@ -886,15 +896,27 @@ onContainerOpen(function(container, previousContainer)
   end
 end)
 
+-- Containers with pages
+local nextPageMacro = macro(defaultDelay * 2, function()
+  if cManager:isOff() then return end
+  for c, container in pairs(pageContainers) do
+    if container.window and container:hasPages() then
+      local nextPageButton = container.window:recursiveGetChildById('nextPageButton')
+      if nextPageButton then nextPageButton.onClick() end
+    else
+      table.remove(pageContainers,c)
+    end
+  end
+end)
 
+-- Containers to be opened
 local openNextMacro = macro(defaultDelay,function()
   if cManager:isOff() then return end
   local old = table.size(g_game.getContainers())
   for e, entry in pairs(containersToOpen) do
-    table.remove(containersToOpen,e)
     g_game.open(entry,nil)
-    delay(defaultDelay + 5)
-    return
+    table.remove(containersToOpen,e)
+    return delay(defaultDelay + 5)
   end
   openMain()
 end)
@@ -935,5 +957,5 @@ macro(20000,function()
   end
 end)
 
-if cManager.isOn() then reopenContainers() end
+if cManager.isOn() and config.reopenAtLogin then reopenContainers() end
 UI.Separator()
