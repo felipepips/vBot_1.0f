@@ -57,7 +57,7 @@ local refreshStatus = function()
             specOutfit.body = 88
             specOutfit.legs = 88
             specOutfit.feet = 88
-            if storage.BOTserver.outfit then
+            if vBot.BotServerMembers[1] and storage.BOTserver.outfit then
               local voc = vBot.BotServerMembers[spec:getName()]
               specOutfit.addons = 3 
               if voc == 1 then
@@ -102,7 +102,7 @@ local checkStatus = function(creature)
         specOutfit.body = 88
         specOutfit.legs = 88
         specOutfit.feet = 88
-        if storage.BOTserver.outfit then
+        if vBot.BotServerMembers[1] and storage.BOTserver.outfit then
           local voc = vBot.BotServerMembers[creature:getName()]
           specOutfit.addons = 3 
           if voc == 1 then
