@@ -174,17 +174,26 @@ SuppliesWindow < MainWindow
 
   TextList
     id: profiles
+    vertical-scrollbar: profilesScrollBar
     anchors.top: prev.bottom
     margin-top: 5
     anchors.left: prev.left
     anchors.right: prev.right
     anchors.bottom: bottomSep.top
     margin-bottom: 25
+
+  VerticalScrollBar
+    id: profilesScrollBar
+    anchors.top: profiles.top
+    anchors.bottom: profiles.bottom
+    anchors.left: profiles.right
+    pixels-scroll: true
+    step: 10  
   
   BotButton
     id: newProfile
-    anchors.left: prev.left
-    anchors.top: prev.bottom
+    anchors.left: profiles.left
+    anchors.top: profiles.bottom
     size: 35 15
     text: New
     font: cipsoftFont

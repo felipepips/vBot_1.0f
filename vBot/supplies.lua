@@ -285,10 +285,14 @@ setProfileFocus()
 
 SuppliesWindow.newProfile.onClick = function()
   local n = SuppliesWindow.profiles:getChildCount()
-  if n > 6 then
+  if n > 60 then
     return info("vBot[Supplies] - max profile count reached!")
   end
   local name = "Profile #" .. n + 1
+  while SuppliesConfig[panelName][name] ~= nil do
+    n = n + 1
+    name = "Profile #" .. n + 1
+  end
   SuppliesConfig[panelName][name] = {items = {}}
   refreshProfileList()
   setProfileFocus()
@@ -444,13 +448,13 @@ Supplies.addSupplyItem = function(id, min, max, avg)
   if not id then
     return
   end
-
-  local widget = addItemPanel()
-  widget:setId(id)
-  widget.id:setItemId(tonumber(id))
-  widget.min:setText(min or 0)
-  widget.max:setText(max or 0)
-  widget.avg:setText(avg or 0)
+  -- by F.Almeida
+  local pro = SuppliesConfig[panelName].currentProfile
+  SuppliesConfig[panelName][pro]["items"][tostring(id)] = {min = min, max = max, avg = avg}
+  vBotConfigSave("supply")
+  loadSettings()
+  refreshProfileList()
+  setProfileFocus()
 end
 
 Supplies.getAdditionalData = function()
@@ -468,6 +472,27 @@ Supplies.getFullData = function()
     items = Supplies.getItemsData(),
     additional = Supplies.getAdditionalData()
   }
-
+  
   return data
+end
+
+-- by F.Almeida
+Supplies.changeProfile = function(profile)
+  if not SuppliesConfig[panelName][profile] then
+    return warn("[Supplies] Profile not found")
+  end
+  SuppliesConfig[panelName].currentProfile = profile
+  currentProfile = SuppliesConfig[panelName].currentProfile
+  config = SuppliesConfig[panelName][currentProfile]
+  loadSettings()
+  refreshProfileList()
+  setProfileFocus()
+end
+
+Supplies.createProfile = function(profileName)
+  if SuppliesConfig[panelName][profileName] then
+    return warn("[Supplies] Profile already exists")
+  end
+  SuppliesConfig[panelName][profileName] = {items = {}}
+  vBotConfigSave("supply")
 end
