@@ -17,6 +17,20 @@ dofile("/cavebot/recorder.lua")
 dofile("/cavebot/walking.lua")
 dofile("/cavebot/minimap.lua")
 -- in this section you can add extensions, check extension_template.lua
+local configName = modules.game_bot.contentsPanel.config:getCurrentOption().text
+
+local path = "/bot/" .. configName .. "/cavebot/extensions"
+if not g_resources.directoryExists(path) then
+  g_resources.makeDir(path)
+end
+
+local extFiles = g_resources.listDirectoryFiles(path, false, false)
+for i, file in ipairs(extFiles) do
+  local ext = file:split(".")
+  if ext[#ext]:lower() == "lua"  then
+    dofile('/cavebot/extensions/'..file)
+  end
+end
 --dofile("/cavebot/extension_template.lua")
 dofile("/cavebot/sell_all.lua")
 dofile("/cavebot/depositor.lua")
