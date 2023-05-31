@@ -1174,3 +1174,35 @@ diamondArrowArea = [[
     11111
     01110
 ]]
+
+-- Custom by F.Almeida
+local offsetDirections = {
+  [North]      =  {0,-1},
+  [East]       =  {1,0},
+  [South]      =  {0,1},
+  [West]       =  {-1,0},
+  [NorthEast]  =  {1,-1},
+  [SouthEast]  =  {1,1},
+  [SouthWest]  =  {-1,1},
+  [NorthWest]  =  {-1,-1},
+}
+function Creature.getNextPosition(self,offset,ignoreDiagonal)
+  local nextDir = self:getDirection()
+  if ignoreDiagonal and nextDir > 3 then
+    if table.find({NorthEast,SouthEast},nextDir) then
+      nextDir = East
+    else
+      nextDir = West
+    end
+  end
+  offset = offset or 1
+  local off = offsetDirections[nextDir]
+  local pos = self:getPosition()
+  pos.x, pos.y = pos.x + (off[1] * offset), pos.y + (off[2] * offset)
+  return pos
+end
+
+function Creature.getNextTile(self,offset,ignoreDiagonal)
+  local nextPos = self:getNextPosition(offset,ignoreDiagonal)
+  return g_map.getTile(nextPos)
+end
