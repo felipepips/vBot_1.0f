@@ -7,7 +7,6 @@ local tag = "[Container Manager]\n" -- used for console log
 local purseId = 23396 -- purse ID
 local slotsQuiver = {getAmmo(), getLeft(), getRight()} -- where should we look for a quiver?
 local defaultDelay = 300 -- never less than 250
-local ignoreContainers = {"depot","locker","inbox"}
 
 -- End of basic settings.
 
@@ -47,6 +46,7 @@ if type(storage[panelName]) ~= "table" then
         eMinimize = false,
         eInfinite = false,
         ePages = false,
+        eFull = false,
         eOpenNext = true,
         eRename = true,
         eResize = true,
@@ -439,16 +439,6 @@ CMUI < MainWindow
 ]])
 
 -- core functions
--- find string fragment in table
-local function findFragment(table, fragment)
-  fragment = fragment:lower()
-  for k,v in pairs(table) do
-    if string.find(v:lower(),fragment) then
-      return true
-    end
-  end
-end
-
 -- parse container list in a proper table
 local cList = {}
 local function parseContainerList()
@@ -652,6 +642,12 @@ if rootWidget then
           label.eInfinite:setChecked(entry.eInfinite)
           label.eInfinite:setColor(entry.eInfinite and cGreen or cRed)
         end
+        -- Entry Open Next if Full
+        label.eFull.onClick = function(widget)
+          entry.eFull = not entry.eFull
+          label.eFull:setChecked(entry.eFull)
+          label.eFull:setColor(entry.eFull and cGreen or cRed)
+        end
         -- Entry Pages
         label.ePages.onClick = function(widget)
           entry.ePages = not entry.ePages
@@ -666,6 +662,7 @@ if rootWidget then
         label.eOpenNext:setColor(entry.eOpenNext and cGreen or cRed)
         label.eRename:setColor(entry.eRename and cGreen or cRed)
         label.eInfinite:setColor(entry.eInfinite and cGreen or cRed)
+        label.eFull:setColor(entry.eFull and cGreen or cRed)
         label.ePages:setColor(entry.ePages and cGreen or cRed)
         label.eResize:setColor(entry.eResize and cGreen or cRed)
 
@@ -710,6 +707,7 @@ if rootWidget then
         eRename = c.eRename or true,
         eInfinite = c.eInfinite or false,
         ePages = c.ePages or false,
+        eFull = c.eFull or false,
         eResize = c.eResize or true,
         eItems = c.eItems or items,
       }
@@ -923,21 +921,32 @@ end)
 
 local sortItemsMacro = macro(defaultDelay, function(m)
   if cManager:isOn() and config.sortItems then
+    if TargetBot and TargetBot.isActive() then return end
     for c, cont in pairs(g_game.getContainers()) do
-      local cName = cont:getName()
-      if not findFragment(ignoreContainers,cName,true) then
-        local cId = cont:getContainerItem():getId()
-        for i, item in pairs(cont:getItems()) do
-          local toId = sList[item:getId()]
-          if toId then
-            if toId ~= cId then
-              local index = findContainerConfig(cId)
-              if index then
-                local settings = config.list[index]
-                if settings.eEnabled then
-                  local dest = getContainerByItem(toId, not settings.eInfinite)
-                  if dest then
-                    return moveItem(item,dest)
+      local srcId = cont:getContainerItem():getId()
+      local srcIndex = findContainerConfig(srcId)
+      if srcIndex then
+        local srcConfig = config.list[srcIndex]
+        if srcConfig and srcConfig.eEnabled then
+          for i, item in ipairs(cont:getItems()) do
+            local toId = sList[item:getId()]
+            if toId and toId ~= srcId then
+              local toIndex = findContainerConfig(toId)
+              if toIndex then
+                local toConfig = config.list[toIndex]
+                if toConfig and toConfig.eEnabled then
+                  local destNotFull = getContainerByItem(toId, not toConfig.eInfinite)
+                  if destNotFull then
+                    return moveItem(item,destNotFull,toConfig.eInfinite and 0 or nil)
+                  elseif toConfig.eFull then
+                    local destFull = getContainerByItem(toId)
+                    if destFull then
+                      for n, newCont in ipairs(destFull:getItems()) do
+                        if newCont:getId() == toId then
+                          return g_game.open(newCont,destFull)
+                        end
+                      end
+                    end
                   end
                 end
               end
