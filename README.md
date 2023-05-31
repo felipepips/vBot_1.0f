@@ -14,6 +14,8 @@ https://www.paypal.com/donate/?business=8XSU4KTS2V9PN&no_recurring=0&item_name=O
 ChangeLog:
 - **[General]**
   - [x] v1.0 - Added Toggle Icons for CaveBot, TargetBot & Alarms;
+  - **[vLib]**
+    - [x] v1.1 - New Creature Methods: 'getNextPosition' and 'getNextTile';
 
 - **[Extras Scripts]**
   - [x] v1.0 - Re-Arranged and fixed some general bugs;
@@ -34,6 +36,15 @@ ChangeLog:
 
 - **[CaveBot]**
   - [x] v1.0 - Only some visual adjustments;
+  - [x] v1.1 - Added 'CaveBot Extensions Loader' (By Lee);
+    - **[NewActions]**
+      - [x] v1.1 - Drop Item to Pos (By Lee);
+      - [x] v1.1 - Check Level (By Lee);
+    - **[SupplyCheck]**
+      - [x] v1.1 - Fixed bug when creating new profiles;
+      - [x] v1.1 - Fixed function addSupplyItem;
+      - [x] v1.1 - New methods: 'changeProfile' and 'createProfile';
+    
 
 - **[HP]**
   - **[HealBot]**
