@@ -148,9 +148,9 @@ TargetBot.Looting.process = function(targets, dangerLevel)
   end
 
   local tile = g_map.getTile(loot.pos)
-  if dist >= 3 or not tile then
+  if dist >= 2 or not tile then
     loot.tries = loot.tries + 1
-    TargetBot.walkTo(loot.pos, 20, { ignoreNonPathable = true, precision = 2 })
+    TargetBot.walkTo(loot.pos, 20, { ignoreNonPathable = true, precision = 1 })
     return true
   end
 
@@ -254,7 +254,8 @@ TargetBot.Looting.lootContainer = function(lootContainers, container)
   -- looting finished, remove container from list
   container.lootContainer = false
   g_game.close(container)
-  table.remove(TargetBot.Looting.list, storage.extras.lootLast and #TargetBot.Looting.list or 1) 
+  local index = storage.extras.lootLast and #TargetBot.Looting.list or 1
+  table.remove(TargetBot.Looting.list, index) 
 end
 
 onTextMessage(function(mode, text)
