@@ -11,6 +11,11 @@ If you want to contribute, message me on Discord: F.Almeida#8019
 If you like this project, consider making a donation:
 https://www.paypal.com/donate/?business=8XSU4KTS2V9PN&no_recurring=0&item_name=OTC+AND+OTS+SCRIPTS&currency_code=USD
 
+ToDo:
+- Create Table/Interface for global items/ids (like doors, holes, rope spots, etc)
+- Fix FriendHealer shit code
+- Optimize/Fix some bugs in ContainerManager
+
 ChangeLog:
 - **[General]**
   - [x] v1.0 - Added Toggle Icons for CaveBot, TargetBot & Alarms;
@@ -30,6 +35,7 @@ ChangeLog:
     - [x] v1.0 - 'Target Only Pathable Mobs' working properly;
     - [x] v1.0 - ReWork in Target Priority;
     - [x] v1.0 - Fixed Minor bugs in Looting;
+    - [x] v1.1 - Add Random Move Direction in 'Avoid Waves' instead of linear walk;
   - **[AttackBot]**
     - [x] v1.0 - Fixed small bugs and UI;
     - [x] v1.0 - Added 'Old School Mode' to work on servers that doesn't allow use items in hotkeys;
