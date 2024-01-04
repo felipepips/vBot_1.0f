@@ -129,20 +129,18 @@ if true then
         if x ~= 0 or y ~= 0 then
           local p = pos()
           p.x, p.y =  p.x + x, p.y + y
-          local path = findPath(pos(),p,maxDistance)
-          if path then
-            local tile = g_map.getTile(p)
-            if tile then
-              local top = tile:getTopUseThing()
-              if top and top:isContainer() then
-                for stake, items in pairs(config) do
-                  local findStake = findItem(stake)
-                  if findStake then
-                    if table.find(items,top:getId()) then
-                      local wait = #path * exhausted
-                      CaveBot.delay(wait + exhausted)
-                      return tile, findStake, wait
-                    end
+          local tile = g_map.getTile(p)
+          if tile then
+            local top = tile:getTopUseThing()
+            if top and top:isContainer() then
+              for stake, items in pairs(config) do
+                local findStake = findItem(stake)
+                local path = findPath(pos(),p,maxDistance)
+                if findStake and path then
+                  if table.find(items,top:getId()) then
+                    local wait = #path * exhausted
+                    CaveBot.delay(wait + exhausted)
+                    return tile, findStake, wait
                   end
                 end
               end
