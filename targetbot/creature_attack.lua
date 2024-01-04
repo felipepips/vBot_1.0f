@@ -193,10 +193,11 @@ TargetBot.Creature.walk = function(creature, config, targets)
     local diffx = cpos.x - pos.x
     local diffy = cpos.y - pos.y
     local candidates = {}
+    local move = math.random(2) == 1 and 1 or -1
     if math.abs(diffx) == 1 and diffy == 0 then
-      candidates = {{x=pos.x, y=pos.y-1, z=pos.z}, {x=pos.x, y=pos.y+1, z=pos.z}}
+      candidates = {{x=pos.x, y=pos.y+move, z=pos.z}, {x=pos.x, y=pos.y-move, z=pos.z}}
     elseif diffx == 0 and math.abs(diffy) == 1 then
-      candidates = {{x=pos.x-1, y=pos.y, z=pos.z}, {x=pos.x+1, y=pos.y, z=pos.z}}
+      candidates = {{x=pos.x+move, y=pos.y, z=pos.z}, {x=pos.x-move, y=pos.y, z=pos.z}}
     end
     for _, candidate in ipairs(candidates) do
       local tile = g_map.getTile(candidate)
