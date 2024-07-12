@@ -1,0 +1,217 @@
+cfEntryButton < Button
+  text-offset: 1 0
+  width: 15
+  height: 15
+  margin-right: 2
+  anchors.right: prev.left
+  font: verdana-11px-rounded
+  
+cfLabel < Label
+  font: verdana-11px-rounded
+
+cfTextEdit < TextEdit
+  font: verdana-11px-rounded
+
+cfConfigBoxPopupMenu < ComboBoxPopupMenu
+cfConfigBoxPopupMenuButton < ComboBoxPopupMenuButton
+cfConfigBox < ComboBox
+  font:verdana-11px-rounded
+  @onSetup: |
+    self:addOption("Mana Percent")
+    self:addOption("Health Percent")
+
+cfSpellBoxPopupMenu < ComboBoxPopupMenu
+cfSpellBoxPopupMenuButton < ComboBoxPopupMenuButton
+cfSpellBox < ComboBox
+  font:verdana-11px-rounded
+
+cfSpellEntry < Label
+  background-color: alpha
+  text-offset: 18 1
+  focusable: true
+  height: 16
+  font: verdana-11px-rounded
+
+  CheckBox
+    id: enabled
+    anchors.left: parent.left
+    anchors.verticalCenter: parent.verticalCenter
+    width: 15
+    height: 15
+    margin-top: 2
+    margin-left: 3
+    $focus:
+      background-color: #00000055
+
+  cfEntryButton
+    id: remove
+    !text: tr('x') 
+    anchors.right: parent.right
+    margin-right: 15
+    color: red
+
+  cfEntryButton
+    id: moveUp
+    !text: tr('+')
+
+  cfEntryButton
+    id: moveDown
+    !text: tr('-')
+
+cfPanel < FlatPanel
+  anchors.right: parent.right
+  anchors.left: parent.left
+  anchors.bottom: parent.bottom
+  margin-bottom: 30
+
+  cfLabel
+    anchors.verticalCenter: parent.top
+    anchors.left: parent.left
+    margin-left: 5
+    text: Spell Healing
+    color: #269e26
+
+  cfLabel
+    anchors.left: entryList.right
+    anchors.top: entryList.top
+    text: Name:
+    margin-left: 7
+
+  cfTextEdit
+    id: friendName
+    anchors.verticalCenter: prev.verticalCenter
+    anchors.right: parent.right
+    margin-right: 10
+    width: 175
+    color: green
+
+  cfLabel
+    anchors.top: prev.bottom
+    anchors.left: entryList.right
+    text: When:
+    margin-left: 7
+    margin-top: 15
+
+  cfConfigBox
+    id: HPorMP
+    anchors.right: friendName.right
+    anchors.verticalCenter: prev.verticalCenter
+    width: 175
+
+  cfLabel
+    text: Is Below:
+    anchors.top: prev.bottom
+    anchors.left: entryList.right
+    margin-left: 7
+    margin-top: 15
+
+  cfTextEdit
+    id: percent
+    text-align: center
+    anchors.left: prev.right
+    anchors.verticalCenter: prev.verticalCenter
+    width: 70
+    margin-left: 15
+
+  cfLabel
+    text: Type:
+    anchors.top: prev.bottom
+    anchors.left: entryList.right
+    margin-left: 7
+    margin-top: 15
+
+  cfSpellBox
+    id: spellType
+    anchors.right: friendName.right
+    anchors.verticalCenter: prev.verticalCenter
+    width: 175
+
+  cfLabel
+    text: Spell:
+    anchors.top: prev.bottom
+    anchors.left: entryList.right
+    margin-left: 7
+    margin-top: 15
+
+  cfSpellBox
+    id: spellName
+    anchors.right: friendName.right
+    anchors.verticalCenter: prev.verticalCenter
+    width: 175
+
+  Button
+    id: addSpell
+    text: Add
+    anchors.top: prev.bottom
+    anchors.left: entryList.right
+    anchors.right: friendName.right
+    margin-left: 7
+    margin-top: 15
+    font:verdana-11px-rounded
+    color:green
+
+  TextList
+    id: entryList
+    anchors.left: parent.left
+    anchors.bottom: parent.bottom
+    anchors.top: parent.top
+    padding: 1
+    padding-top: 2
+    width: 385  
+    margin-bottom: 7
+    margin-left: 7
+    margin-top: 10
+    vertical-scrollbar: entryListScrollBar
+
+  VerticalScrollBar
+    id: entryListScrollBar
+    anchors.top: entryList.top
+    anchors.bottom: entryList.bottom
+    anchors.right: entryList.right
+    step: 14
+    pixels-scroll: true    
+
+cfWindow < MainWindow
+  !text: tr('Friend Healer')
+  size: 660 360
+  @onEscape: self:hide()
+
+  cfLabel
+    id: title
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.top: parent.top
+    margin-left: 2
+    !text: tr('More important methods come first')
+    text-align: center
+    color: #aeaeae  
+
+  Panel
+    id: healer
+    anchors.top: prev.bottom
+    anchors.left: parent.left
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+      
+    cfPanel
+      id: spells
+      anchors.top: parent.top
+      margin-top: 8
+      anchors.left: parent.left
+
+  HorizontalSeparator
+    id: separator
+    anchors.right: parent.right
+    anchors.left: parent.left
+    anchors.bottom: closeButton.top
+    margin-bottom: 8    
+
+  Button
+    id: closeButton
+    !text: tr('Close')
+    font: verdana-11px-rounded
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    size: 45 21
+    margin-right: 5
+    color: red

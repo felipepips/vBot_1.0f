@@ -1,0 +1,46 @@
+cpCheckBox < CheckBox
+  anchors.top: prev.bottom
+  anchors.left: parent.left
+  anchors.right: parent.right
+  margin-left: 10
+  margin-right: 10
+  text-wrap: true
+  text-auto-resize: true
+  margin-top: 10
+  font: verdana-11px-rounded
+  $first:
+    anchors.top: parent.top
+
+cpPanel < FlatPanel
+  anchors.right: parent.right
+  anchors.left: parent.left
+  anchors.bottom: parent.bottom
+  margin-bottom: 30
+
+cpWindow < MainWindow
+  !text: tr('Party Buffs')
+  size: 220 360
+  @onEscape: self:hide()
+      
+  cpPanel
+    id: spells
+    anchors.top: parent.top
+    margin-top: 8
+    anchors.left: parent.left
+
+  HorizontalSeparator
+    id: separator
+    anchors.right: parent.right
+    anchors.left: parent.left
+    anchors.bottom: closeButton.top
+    margin-bottom: 8    
+
+  Button
+    id: closeButton
+    !text: tr('Close')
+    font: verdana-11px-rounded
+    anchors.right: parent.right
+    anchors.bottom: parent.bottom
+    size: 45 21
+    margin-right: 5
+    color: red

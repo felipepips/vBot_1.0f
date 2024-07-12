@@ -1,8 +1,11 @@
 -- AUTO REVIDE / FIGHT BACK / ATTACK PLAYER PK (REVIDAR)
 
+-- Script feito por F.Almeida
+-- Se foi útil pra você e quiser fazer uma doação:
+-- https://www.paypal.com/donate/?business=8XSU4KTS2V9PN&no_recurring=0&item_name=OTC+AND+OTS+SCRIPTS&currency_code=BRL
+
 setDefaultTab("Main")
 
--- vBot scripting services: F.Almeida#8019
 -- if you like it, consider making a donation:
 -- https://www.paypal.com/donate/?business=8XSU4KTS2V9PN&no_recurring=0&item_name=OTC+AND+OTS+SCRIPTS&currency_code=USD
 
@@ -259,3 +262,7 @@ onKeyDown(function(keys)
 end)
 
 UI.Separator()
+
+-- Script feito por F.Almeida
+-- Se foi útil pra você e quiser fazer uma doação:
+-- https://www.paypal.com/donate/?business=8XSU4KTS2V9PN&no_recurring=0&item_name=OTC+AND+OTS+SCRIPTS&currency_code=BRL

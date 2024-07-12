@@ -1,0 +1,25 @@
+Instruções Depositer:
+Para entendimento: quando me refiro à 'versões antigas' são servidores que dentro do locker só existe 1 depot chest, em 'versões novas' são aquelas que dentro do depot chest existem +- 20 depot boxes
+Versões novas: vai depositar itens agrupáveis na box 1 e itens não agrupáveis na box 2 (se quiser configurar 1 box específica para cada item, você pode usar o 'stash settings' que já tem no vBot 4.8)
+Versões antigas: vai depositar dentro das bps configuradas em 'containers to deposit' dentro do depot chest (locker > chest > bp)
+
+1- Vai aparecer uma caixa de configuração no final da aba 'Cave'
+2- Nessa caixa tem as seguintes configurações:
+  - Items to Deposit = Itens que vai depositar
+  - Containers to Deposit = Onde será depositado (para versões antigas e/ou para depositar em House)
+  - Old Versions = Conforme mencionei antes, caso jogue em versões antigas, certifique-se de que esteja marcado
+  - Deposit All = Vai depositar todos os itens que estiverem na lista de loot do TargetBot (Além dos configurados em Items to Deposit)
+  - Depot Name = Altere caso no servidor que você joga o nome do depot chest seja diferente (Precisa ser exatamente igual)
+  - Default Delay = Caso jogue com ping/latência baixa, e quiser acelerar um pouco o depositer, pode diminuir este valor
+3- Feitas as configurações, você já pode inserir a action 'Deposit V2' que apareceu no editor do CaveBot.
+  - Ao inserir a ação, você precisa informar 2 valores, separados por virgula
+  - O primeiro valor deve ser 'house' ou 'depot' para informar se é para depositar no Depot ou em House
+  - (Para depositar em House, é só deixar a BP que foi configurada em 'Containers to Deposit' no chão)
+  - O Segundo valor deve ser 'yes' ou 'no', isto é para saber se as BPs onde ficam o loot devem ser reabertas ou não
+  - (Caso você deixe seu char com todas as bps de loot já abertas, coloque 'no')
+  - (Caso você deixe com apenas 1 bp de loot aberta, e o bot abre a próxima sozinho quando ela enche, coloque 'yes')
+  - Opções: "depot, yes" - "depot, no" - "house, yes" - "house, no"
+
+-- Script feito por F.Almeida
+-- Se foi útil pra você e quiser fazer uma doação:
+-- https://www.paypal.com/donate/?business=8XSU4KTS2V9PN&no_recurring=0&item_name=OTC+AND+OTS+SCRIPTS&currency_code=BRL

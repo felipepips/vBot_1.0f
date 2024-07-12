@@ -1,3 +1,26 @@
+### Projeto abandonado, não dou suporte, não faço scripts por encomenda.
+
+Os melhores scripts estão em:
+- zPaidScripts
+- zFreeScripts
+
+Nessa pasta até que tem bastante coisa útil:
+- zxVarios
+
+Aqui eu nem olhei o que tinha dentro..
+- zzAjudasDiscord
+
+~
+*
+~
+
+### Se foi útil pra você e quiser fazer uma doação: [Clique Aqui](https://www.paypal.com/donate/?business=8XSU4KTS2V9PN&no_recurring=0&item_name=OTC+AND+OTS+SCRIPTS&currency_code=BRL)
+
+
+~
+*
+~
+
 This bot is based on vBot 4.8 by Vithrax
 The original repository is: https://github.com/Vithrax/vBot
 
